@@ -26,7 +26,6 @@ import com.google.gson.JsonObject
 import com.switchsolutions.farmtohome.bdo.*
 import com.switchsolutions.farmtohome.bdo.callbacks.HttpStatusCodes
 import com.switchsolutions.farmtohome.bdo.databinding.CreateCartFragmentBinding
-import com.switchsolutions.farmtohome.bdo.dbhelper.DBHelper
 import com.switchsolutions.farmtohome.bdo.enums.Type
 import com.switchsolutions.farmtohome.bdo.interfaces.CartBadge
 import com.switchsolutions.farmtohome.bdo.interfaces.ReplaceFragment
@@ -50,7 +49,6 @@ class CartFragment : Fragment() {
     private lateinit var cartViewModel: CartViewModel
     private lateinit var adapter: MyCartRecyclerViewAdapter
     lateinit var binding: CreateCartFragmentBinding
-    lateinit var helper: DBHelper
     lateinit var cartDataList: List<CartEntityClass>
     lateinit var product: CartEntityClass
 
@@ -76,8 +74,6 @@ class CartFragment : Fragment() {
         deliveryDate =
             prefs.getString("customerDeliveryDate", "").toString() //0 is the default value.
         binding = CreateCartFragmentBinding.inflate(layoutInflater)
-
-        helper = DBHelper(requireContext())
         return binding.root
     }
 
