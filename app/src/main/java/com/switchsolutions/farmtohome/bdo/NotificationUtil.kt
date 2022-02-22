@@ -12,7 +12,7 @@ class NotificationUtil {
         private const val textSize : Int = 13
 
         fun showShortToast(context : Context, msg : String, type : Type){
-            Cue.init()
+            Cue.init()!!
                     .with(context)
                     .setMessage(msg)
                     .setDuration(Duration.SHORT)
@@ -22,7 +22,7 @@ class NotificationUtil {
         }
 
         fun showShortToast(context : Context, msg : Int, type : Type){
-            Cue.init()
+            Cue.init()!!
                     .with(context)
                     .setMessage(context.getString(msg))
                     .setDuration(Duration.SHORT)
@@ -32,7 +32,7 @@ class NotificationUtil {
         }
 
         fun showLongToast(context : Context, msg : String, type : Type){
-            Cue.init()
+            Cue.init()!!
                     .with(context)
                     .setMessage(msg)
                     .setDuration(Duration.LONG)
@@ -42,7 +42,7 @@ class NotificationUtil {
         }
 
         fun showLongToast(context : Context, msg : Int, type : Type){
-            Cue.init()
+            Cue.init()!!
                     .with(context)
                     .setMessage(context.getString(msg))
                     .setDuration(Duration.LONG)

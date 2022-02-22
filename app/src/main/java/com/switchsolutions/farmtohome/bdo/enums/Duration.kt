@@ -1,6 +1,5 @@
-package com.switchsolutions.farmtohome.bdo.enums;
+package com.switchsolutions.farmtohome.bdo.enums
 
-
-public enum Duration {
+enum class Duration {
     LONG, SHORT
 }
