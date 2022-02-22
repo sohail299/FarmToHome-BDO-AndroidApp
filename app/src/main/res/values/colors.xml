@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <!-- <color name="colorPrimary">#f44336</color>     #fffdd0-->
+    <color name="colorPrimary">#F44236</color>
+    <color name="colorPrimaryWhite">#FFFFFF</color>
+    <!-- <color name="colorPrimaryDark">#c62828</color>-->
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#4CAF50</color>
+
+    <color name="categories_icon">#4fac4d</color>
+    <color name="add_to_cart_button">#4fac4d</color>
+    <color name="items_background">#edeff2</color>
+    <color name="colorTrans">#a0ffffff</color>
+    <color name="light_grey">#F4F4F4</color>
+    <color name="gray">#f7f6f2</color>
+    <color name="solid_gray">#DFDFDF</color>
+    <color name="my_spinner_text_color">#808080</color>
+    <color name="screen_background">#F5F8FB</color>
+    <color name="skeleton_item_color">#F4F4F4</color>
+    <color name="default_text_color">#2E2E2E</color>
+
+    <drawable name="rating_selected">#000</drawable>
+    <drawable name="rating_unselected">#D3D3D3</drawable>
+
+
+    <!--farm to home colors end here-->
+
+
+    <color name="black">#212121</color>
+    <color name="black_disabled_text">#61000000</color>
+
+    <color name="white">#FAFAFA</color>
+    <color name="white_primary_text">#FFF</color>
+
+    <!--reds-->
+    <color name="md_red_500">#F44336</color>
+
+
+    <!--blue-->
+    <color name="md_blue_900">#0D47A1</color>
+
+    <!-- green -->
+    <color name="md_green_50">#5CBC21</color>
+    <color name="md_green_500">#4CAF50</color>
+    <color name="md_green_600">#43A047</color>
+    <color name="fresh_green_100">#ccff36</color>
+    <color name="green_new">#93CE41</color>
+
+    <color name="red_new">#D62F35</color>
+    <color name="toolbar_background_color">#002432</color>
+
+    <!--orange-->
+    <color name="md_orange_500">#FF9800</color>
+
+    <!--grey-->
+    <color name="md_grey_100">#F5F5F5</color>
+    <color name="md_grey_200">#EEEEEE</color>
+    <color name="md_grey_300">#E0E0E0</color>
+    <color name="md_grey_400">#BDBDBD</color>
+    <color name="md_grey_500">#9E9E9E</color>
+    <color name="md_white_1000">#ffffff</color>
+    <color name="md_sky_blue_1000">#87CEEB</color>
+
+
+    <!--purple-->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+
+</resources>

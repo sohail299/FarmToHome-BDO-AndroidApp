@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">BDO F2H</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_dispatched">Dispatched</string>
+    <string name="menu_cart">Cart</string>
+    <string name="menu_delivered">Delivered</string>
+    <string name="no_internet">"No internet "</string>
+    <string name="no_content">No content to show</string>
+    <string name="unauthrozed">UnAuthorized</string>
+    <string name="error_occurred">Error Occurred!</string>
+    <string name="order_updated">Order Updated!</string>
+    <string name="farm_to_home">Farm To Home</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="password">Enter Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="Dashboard">Dashboard</string>
+    <string name="delivery_date">Delivery Date</string>
+    <string name="create_request">Create Request</string>
+    <string name="select_customer">Enter Customer</string>
+    <string name="tv_date_format">dd/mm/yyyy</string>
+    <string name="tv_select_product">Select Product</string>
+    <string name="select_product">Enter Product</string>
+    <string name="quantity">Quantity</string>
+    <string name="enter_quantity">Enter Quantity</string>
+    <string name="add_to_cart_product">Add To Cart</string>
+    <string name="add_product">Add Product</string>
+    <string name="location">Location</string>
+    <string name="please_select_branch">Please Select Branch</string>
+    <string name="select_location">Select Location</string>
+    <string name="delete_confirm">Are you sure you want to delete this order?</string>
+    <string name="deliver_confirm">Are you sure you want to mark this order as Delivered?</string>
+    <string name="delete">Delete</string>
+    <string name="delivered">Delivered</string>
+    <string name="cancel">Cancel</string>
+    <string name="customer">Customer</string>
+    <string name="product">Product</string>
+    <string name="phone_number_is_invalid">Invalid Number</string>
+    <string name="confirm_logout">Are you sure you want to Logout?</string>
+    <string name="logout">Logout</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+</resources>

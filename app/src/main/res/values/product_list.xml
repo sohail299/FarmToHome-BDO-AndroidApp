@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string-array name="planets_array">
+            <item>Tomato</item>
+            <item>Orange</item>
+            <item>Banana</item>
+            <item>Mango</item>
+            <item>Lady Finger</item>
+        </string-array>
+</resources>
