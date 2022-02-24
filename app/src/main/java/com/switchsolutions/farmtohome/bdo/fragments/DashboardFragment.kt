@@ -77,7 +77,6 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
     lateinit var binding: DashboardFragmenttFragmentBinding
     private lateinit var dashboardResponseData: DashboardResponseData
     private lateinit var editOrderResponseData: EditResponseModel
-    private lateinit var editOrdersResponseData: GetOrdersForEditResponseModel
     private lateinit var editOrderDialog: Dialog
     lateinit var delivDate: TextView
     lateinit var etProducts: AutoCompleteTextView
@@ -113,14 +112,14 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         viewModelEditOrders.status.observe(viewLifecycleOwner, Observer { it ->
             it.getContentIfNotHandled()?.let {
                 editOrders = it.products
-                if (requisitionIdEdit == editOrdersResponseData.data.id)
+                if (requisitionIdEdit == viewModelEditOrders.apiResponseSuccess.value!!.data.id)
                 {
                     if (!dialoClicked) {
                         editOrdersTemp.clear()
                         dialoClicked = true
                         for ((index) in editOrders.withIndex())
                         editOrdersTemp.add(editOrders[index])
-                        showEditOrderDialog(editOrders, editOrdersResponseData.data)
+                        showEditOrderDialog(editOrders, viewModelEditOrders.apiResponseSuccess.value!!.data)
                     }
                 }
             }
@@ -159,7 +158,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
                     //Log.i("DialogClicked", dialoClicked.toString())
                     requisitionIdEdit = item.id!!
                     viewModelEditOrders.startObserver()
-                    startObserversForEditOrders()
+                  //  startObserversForEditOrders()
                 }
             binding.recyclerView.setHasFixedSize(true)
             binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -285,47 +284,46 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         }
     }
 
-    fun startObserversForEditOrders() {
-        viewModelEditOrders.callSignInApi.observe(viewLifecycleOwner, Observer {
-            if (it!!) {
-                if (waitDialog != null && !waitDialog.isShowing) {
-                    waitDialog = ProgressDialog.show(requireContext(), "", "Fetching Detail..")
-                    waitDialog.setCancelable(true)
-                }
-            }
-        })
-        viewModelEditOrders.apiResponseSuccess.observe(viewLifecycleOwner, Observer {
-            if (waitDialog.isShowing) waitDialog.dismiss()
-            editOrdersResponseData = it
-           // editOrders = editOrdersResponseData.products
-//            val adapter = DashboardAdapter(orders, View.OnClickListener(){
-//            })
-
-            //showEditOrderDialog()
-        })
-        viewModel.apiResponseFailure.observe(viewLifecycleOwner, Observer {
-            if (waitDialog.isShowing) waitDialog.dismiss()
-            if ((it?.statusCode == HttpStatusCodes.SC_UNAUTHORIZED) || (it?.statusCode == HttpStatusCodes.SC_NO_CONTENT)) {
-                Toast.makeText(
-                    requireContext(), "Unauthorized",
-                    Toast.LENGTH_LONG
-                ).show()
-//                val builder = AlertDialog.Builder(context!!)
-//                builder.setMessage(context?.getString(R.string.invalid_credentials))
-//                        .setPositiveButton(context?.getString(R.string.ok)) { dialog, _ ->
-//                            dialog.dismiss()
-//                        }
-//                builder.create().show()
-            } else {
+//    fun startObserversForEditOrders() {
+//        viewModelEditOrders.callSignInApi.observe(viewLifecycleOwner, Observer {
+//            if (it!!) {
+//                if (waitDialog != null && !waitDialog.isShowing) {
+//                    waitDialog = ProgressDialog.show(requireContext(), "", "Fetching Detail..")
+//                    waitDialog.setCancelable(true)
+//                }
+//            }
+//        })
+//        viewModelEditOrders.apiResponseSuccess.observe(viewLifecycleOwner, Observer {
+//            if (waitDialog.isShowing) waitDialog.dismiss()
+//           // editOrders = editOrdersResponseData.products
+////            val adapter = DashboardAdapter(orders, View.OnClickListener(){
+////            })
+//
+//            //showEditOrderDialog()
+//        })
+//        viewModel.apiResponseFailure.observe(viewLifecycleOwner, Observer {
+//            if (waitDialog.isShowing) waitDialog.dismiss()
+//            if ((it?.statusCode == HttpStatusCodes.SC_UNAUTHORIZED) || (it?.statusCode == HttpStatusCodes.SC_NO_CONTENT)) {
 //                Toast.makeText(
-//                    requireContext(), "An Error Occurred",
+//                    requireContext(), "Unauthorized",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                //NotificationUtil.showShortToast(context!!, context!!.getString(R.string.error_occurred), Type.DANGER)
-            }
-        })
-
-    }
+////                val builder = AlertDialog.Builder(context!!)
+////                builder.setMessage(context?.getString(R.string.invalid_credentials))
+////                        .setPositiveButton(context?.getString(R.string.ok)) { dialog, _ ->
+////                            dialog.dismiss()
+////                        }
+////                builder.create().show()
+//            } else {
+////                Toast.makeText(
+////                    requireContext(), "An Error Occurred",
+////                    Toast.LENGTH_LONG
+////                ).show()
+//                //NotificationUtil.showShortToast(context!!, context!!.getString(R.string.error_occurred), Type.DANGER)
+//            }
+//        })
+//
+//    }
     fun triggerMainFragmentFunction(dashBoardOrdersData: DashBoardOrdersData) {
         editData = dashBoardOrdersData
     }
@@ -460,6 +458,9 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             editOrders.add(editOrderProducts)
             adapter.notifyDataSetChanged()
         }
+        else{
+            Toast.makeText(requireContext(), "Please Choose Product", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun updateOrder(products: ArrayList<OrderProductsData>, data: EditOrdersData) {
@@ -470,13 +471,15 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         editOrderObject.addProperty("delivery_date", delivDate.text.toString())
         editOrderObject.addProperty("request_id", data.id)
         editOrderObject.addProperty("city_id", USER_STORED_CITY_ID)
-        for ((index) in products.withIndex()) {
-            val editOrderProducts = JsonObject()
-            editOrderProducts.addProperty("value", products[index].value)
-            editOrderProducts.addProperty("quantity", productQuantity[index])
-            editOrderProducts.addProperty("is_removed", 0)
-            productsArray.add(editOrderProducts)
-        }
+        if (products.size > 0){
+            for ((index) in products.withIndex()) {
+                val editOrderProducts = JsonObject()
+                editOrderProducts.addProperty("value", products[index].value)
+                editOrderProducts.addProperty("quantity", productQuantity[index])
+                editOrderProducts.addProperty("is_removed", 0)
+                productsArray.add(editOrderProducts)
+            }
+    }
         if (etProducts.text.isNotEmpty() && etProductsQuantit.text.isNotEmpty()) {
             val editOrderProducts = JsonObject()
             editOrderProducts.addProperty("value", productId)

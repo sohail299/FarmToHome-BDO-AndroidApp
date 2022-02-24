@@ -3,6 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_edit_order"
         android:layout_width="match_parent"
@@ -143,7 +146,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_edit_item_list"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"/>
+                        android:layout_height="wrap_content"/>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -248,4 +251,5 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

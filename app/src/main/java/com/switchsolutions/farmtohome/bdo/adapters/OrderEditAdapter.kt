@@ -4,23 +4,15 @@ package com.switchsolutions.farmtohome.bdo.adapters
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.switchsolutions.farmtohome.bdo.MainActivity
 import com.switchsolutions.farmtohome.bdo.R
-import com.switchsolutions.farmtohome.bdo.fragments.CartFragment
 import com.switchsolutions.farmtohome.bdo.fragments.DashboardFragment
-import com.switchsolutions.farmtohome.bdo.responsemodels.DashBoardOrdersData
 import com.switchsolutions.farmtohome.bdo.responsemodels.OrderProductsData
 import com.switchsolutions.farmtohome.bdo.viewmodels.DashboardFragmentViewModel
-import kotlinx.coroutines.NonDisposableHandle.parent
-import okhttp3.internal.notify
 
 
 class OrderEditAdapter(private var viewModel: DashboardFragmentViewModel,

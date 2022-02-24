@@ -62,6 +62,8 @@ class CreateRequestFragment : Fragment() {
     var productName : String = ""
     var badgeCount: Int = 0
     var previousProduct: Boolean = false
+    var customerSelected: Boolean = false
+    var productSelected: Boolean = false
     var productUnit : String = ""
     lateinit var itemToUpdate : CartEntityClass
     private val MY_PREFS_NAME = "FarmToHomeBDO"
@@ -126,7 +128,9 @@ class CreateRequestFragment : Fragment() {
         binding.etSelectProduct.setAdapter(adapterTvProducts)
         binding.etSelectCustomer.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                customerSelected = false
                 if (binding.etSelectCustomer.isPerformingCompletion ) {
+                    customerSelected = true
                     binding.etSelectCustomer.error = null
                     for ((index) in MainActivity.customerNamesData.withIndex())
                     {
@@ -145,20 +149,25 @@ class CreateRequestFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 if (binding.etSelectCustomer.isPerformingCompletion) {
+                    customerSelected = true
                     binding.etSelectCustomer.error = null
                     return
                 }
-                if (binding.etSelectCustomer.text.toString().isNotEmpty())
+                if (binding.etSelectCustomer.text.toString().isEmpty())
                 binding.etSelectCustomer.error = "Choose Customer"
-                else
+                else {
+                    customerSelected = false
                     binding.etSelectCustomer.error = null
+                }
 
             }
         })
 
         binding.etSelectProduct.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                productSelected = false
                 if (binding.etSelectProduct.isPerformingCompletion) {
+                    productSelected = true
                 ///    Log.i("CustomerIndex", "Change Text  " + MainActivity.productIdData[count] +  " Item  " + MainActivity.productNamesData[count] )
                     binding.etSelectProduct.error = null
                     for ((index) in MainActivity.productUnitData.withIndex())
@@ -178,26 +187,27 @@ class CreateRequestFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 if (binding.etSelectProduct.isPerformingCompletion) {
+                    productSelected = true
                     binding.etSelectProduct.error = null
-
                     return
                 }
-                if (binding.etSelectProduct.text.toString().isNotEmpty())
+                if (binding.etSelectProduct.text.toString().isEmpty())
                 binding.etSelectProduct.error = "Choose Product"
-                else
+                else {
                     binding.etSelectProduct.error = null
+                }
 
             }
         })
 
         binding.btnAddToCart.setOnClickListener {
-            if (binding.etSelectCustomer.text.isEmpty()) {
+            if (binding.etSelectCustomer.text.isEmpty() || !customerSelected) {
                 binding.etSelectCustomer.error = "Choose Customer"
             } else if (binding.tvDateSelected.text.equals("dd/mm/yyyy")) {
                 binding.ivDatePicker.setImageResource(R.drawable.calendar_error)
                 Toast.makeText(requireContext(), "Please Select Delivery Date", Toast.LENGTH_LONG)
                     .show()
-            } else if (binding.etSelectProduct.text.isEmpty()) {
+            } else if (binding.etSelectProduct.text.isEmpty() || !productSelected) {
                 binding.etSelectProduct.error = "Choose Product"
             } else if (binding.etSelectProductQuantity.text.isEmpty() || (binding.etSelectProductQuantity.text.toString().toIntOrNull())!! <= 0) {
                 binding.etSelectProductQuantity.error = "Enter Valid Quantity"
@@ -249,7 +259,8 @@ class CreateRequestFragment : Fragment() {
                 MainActivity.deliveryDate = binding.tvDateSelected.text.toString()
                 binding.etSelectProduct.setText("")
                 binding.etSelectProductQuantity.setText("")
-
+                    customerSelected = false
+                productSelected = false
                 Toast.makeText(requireContext(), "Added To Cart", Toast.LENGTH_SHORT).show()
             }
             else {
@@ -277,6 +288,8 @@ class CreateRequestFragment : Fragment() {
                 previousCustomerId = customerId
                 val cb : CartBadge = activity as CartBadge
                 cb.cartBadge(badgeCount)
+                customerSelected = false
+                productSelected = false
                 Toast.makeText(requireContext(), "Added To Cart", Toast.LENGTH_SHORT).show()
             }
         }

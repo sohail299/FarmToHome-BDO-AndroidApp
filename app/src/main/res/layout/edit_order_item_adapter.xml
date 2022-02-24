@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/product_holder_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,154 +11,163 @@
     app:cardCornerRadius="5dp"
         android:elevation="5dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal">
-
-            <TextView
-                android:id="@+id/product_name_edit"
-                android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/montserrat"
-                android:text="Product Name"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="horizontal">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/product_name_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Product Name"
+                        android:textColor="#000"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
-            <ImageButton
-                android:id="@+id/ib_remove_item_edit_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_gravity="end"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/close_black_icon"
-                android:fontFamily="@font/roboto"
-                android:gravity="center"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:textColor="#99000000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                    <ImageButton
+                        android:id="@+id/ib_remove_item_edit_cart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_gravity="right"
+                        android:background="@drawable/close_black_icon"
+                        android:fontFamily="@font/roboto"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textColor="#99000000"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/product_unit_and_quantity_cart"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/montserrat"
-                android:text="Unit"
-                android:textColor="#2E2E2E"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/product_name_edit"
-                app:layout_constraintTop_toBottomOf="@+id/product_name_edit" />
+            </LinearLayout>
 
-            <View
-                android:id="@+id/view_divider"
-                android:layout_width="3dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="48dp"
-                android:background="@color/gray"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/product_unit_and_quantity_cart"
-                app:layout_constraintTop_toBottomOf="@+id/product_name_edit"
-                app:layout_constraintVertical_bias="0.675" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/product_unit_and_quantity_cart2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat"
-                android:gravity="center"
-                android:text="Kg"
-                android:textColor="#2E2E2E"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/view_divider"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/product_qty_minus_cart_edit"
-                app:layout_constraintVertical_bias="0.0" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/total_price_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat"
-                android:text="Quantity"
-                android:textColor="#2E2E2E"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/product_unit_and_quantity_cart"
-                app:layout_constraintEnd_toEndOf="@+id/product_qty_add_cart_edit"
-                app:layout_constraintHorizontal_bias="0.454"
-                app:layout_constraintStart_toStartOf="@+id/product_qty_minus_cart_edit"
-                app:layout_constraintTop_toTopOf="@+id/product_unit_and_quantity_cart"
-                app:layout_constraintVertical_bias="0.0" />
+                    <TextView
+                        android:id="@+id/product_unit_and_quantity_cart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Unit"
+                        android:textColor="#2E2E2E"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/view_divider"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <View
+                        android:id="@+id/view_divider"
+                        android:layout_width="3dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="64dp"
+                        android:background="@color/gray"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/product_unit_and_quantity_cart"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.523" />
+
+                    <TextView
+                        android:id="@+id/product_unit_and_quantity_cart2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:gravity="center"
+                        android:text="Kg"
+                        android:textColor="#2E2E2E"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/view_divider"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/product_qty_minus_cart_edit" />
+
+                    <TextView
+                        android:id="@+id/total_price_cart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Quantity"
+                        android:textColor="#2E2E2E"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/product_unit_and_quantity_cart"
+                        app:layout_constraintEnd_toEndOf="@+id/product_qty_add_cart_edit"
+                        app:layout_constraintHorizontal_bias="0.454"
+                        app:layout_constraintStart_toStartOf="@+id/product_qty_minus_cart_edit"
+                        app:layout_constraintTop_toTopOf="@+id/product_unit_and_quantity_cart"
+                        app:layout_constraintVertical_bias="0.0" />
 
 
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="#FFF"
-                app:layout_constraintBottom_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                    <ImageButton
+                        android:id="@+id/product_qty_minus_cart_edit"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="64dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_primary_background"
+                        android:padding="8dp"
+                        android:src="@drawable/subtract_product_qty_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/view_divider"
+                        app:layout_constraintTop_toBottomOf="@+id/total_price_cart" />
 
-            <ImageButton
-                android:id="@+id/product_qty_minus_cart_edit"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_primary_background"
-                android:padding="8dp"
-                android:src="@drawable/subtract_product_qty_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/view_divider"
-                app:layout_constraintTop_toBottomOf="@+id/total_price_cart"
-                app:layout_constraintVertical_bias="0.272" />
+                    <EditText
+                        android:id="@+id/total_qty_cart_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:fontFamily="@font/montserrat"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:padding="8dp"
+                        android:text="10"
+                        android:textColor="#000"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/product_qty_minus_cart_edit"
+                        app:layout_constraintStart_toEndOf="@+id/product_qty_minus_cart_edit"
+                        app:layout_constraintTop_toTopOf="@+id/product_qty_minus_cart_edit" />
 
-            <EditText
-                android:id="@+id/total_qty_cart_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:fontFamily="@font/montserrat"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="4"
-                android:padding="8dp"
-                android:text="10"
-                android:textColor="#000"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/product_qty_minus_cart_edit"
-                app:layout_constraintStart_toEndOf="@+id/product_qty_minus_cart_edit"
-                app:layout_constraintTop_toTopOf="@+id/product_qty_minus_cart_edit" />
+                    <ImageButton
+                        android:id="@+id/product_qty_add_cart_edit"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/rounded_primary_background"
+                        android:src="@drawable/add_product_qty_icon"
+                        app:layout_constraintBottom_toBottomOf="@+id/product_qty_minus_cart_edit"
+                        app:layout_constraintStart_toEndOf="@+id/total_qty_cart_edit"
+                        app:layout_constraintTop_toTopOf="@+id/product_qty_minus_cart_edit"
+                        app:layout_constraintVertical_bias="0.0" />
 
-            <ImageButton
-                android:id="@+id/product_qty_add_cart_edit"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:background="@drawable/rounded_primary_background"
-                android:src="@drawable/add_product_qty_icon"
-                app:layout_constraintBottom_toBottomOf="@+id/product_qty_minus_cart_edit"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.07"
-                app:layout_constraintStart_toEndOf="@+id/total_qty_cart_edit"
-                app:layout_constraintTop_toTopOf="@+id/product_qty_minus_cart_edit"
-                app:layout_constraintVertical_bias="0.0" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -21,6 +21,7 @@ class GetOrdersToEditViewModel : ViewModel() {
 
     var apiResponseSuccess: MutableLiveData<GetOrdersForEditResponseModel> = MutableLiveData()
     var apiResponseFailure: MutableLiveData<ErrorDto> = MutableLiveData()
+    lateinit var editOrdersResponseData: GetOrdersForEditResponseModel
 
     private val statusSuccess = MutableLiveData<Event<GetOrdersForEditResponseModel>>()
     val status: MutableLiveData<Event<GetOrdersForEditResponseModel>>
@@ -41,9 +42,7 @@ class GetOrdersToEditViewModel : ViewModel() {
                 apiResponseSuccess.value = t!!
                 callSignInApi.value = false
                 //saving user details
-                DashboardAdapter.dataEdit = t.products
                 statusSuccess.value = Event(t)
-
 
             }
             override fun onFailure(t: ErrorDto) {

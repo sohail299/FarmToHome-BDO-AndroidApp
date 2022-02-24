@@ -133,6 +133,7 @@ class CartFragment : Fragment() {
         submitViewModel.callCartSubmitApi.observe(viewLifecycleOwner, Observer {
             if (it!!) {
                 waitDialog = ProgressDialog.show(requireContext(), "", "Submitting")
+                waitDialog.setCancelable(true)
             }
         })
         submitViewModel.apiResponseSuccess.observe(viewLifecycleOwner, Observer {
@@ -149,6 +150,7 @@ class CartFragment : Fragment() {
             initRecyclerView()
         })
         submitViewModel.apiResponseFailure.observe(viewLifecycleOwner, Observer {
+            if (waitDialog.isShowing) waitDialog.dismiss()
             if ((it?.statusCode == HttpStatusCodes.SC_UNAUTHORIZED) || (it?.statusCode == HttpStatusCodes.SC_NO_CONTENT)) {
                 Toast.makeText(
                     requireContext(), "Failed to Submit",
@@ -165,6 +167,7 @@ class CartFragment : Fragment() {
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
+                if (waitDialog.isShowing) waitDialog.dismiss()
                 NotificationUtil.showShortToast(context!!, context!!.getString(R.string.error_occurred), Type.DANGER)
             }
         })

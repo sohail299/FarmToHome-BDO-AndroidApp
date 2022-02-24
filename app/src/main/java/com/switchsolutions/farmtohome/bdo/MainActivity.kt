@@ -658,10 +658,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
 
             btnOk.setOnClickListener {
                 editOrderDialog.dismiss()
+                DashboardFragment.dialoClicked = false
             }
             btnCloseDialog.setOnClickListener {
                 DashboardFragment.dialoClicked = false
-
                 editOrderDialog.dismiss()
             }
 
