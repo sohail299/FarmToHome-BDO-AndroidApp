@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:text="Add Product"
                         android:textStyle="bold"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="5dp"
                         android:fontFamily="@font/montserrat"
                         android:layout_marginStart="15dp"/>
 
@@ -171,7 +171,7 @@
                         <AutoCompleteTextView
                             android:id="@+id/et_select_product_edit"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="30dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginStart="15dp"
                             android:layout_marginEnd="15dp"
@@ -189,14 +189,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/quantity"
                         android:textStyle="bold"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="5dp"
                         android:fontFamily="@font/montserrat"
                         android:layout_marginStart="15dp"/>
 
                     <EditText
                         android:id="@+id/et_select_product_quantity_edit"
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
+                        android:layout_height="30dp"
                         android:ems="10"
                         android:maxLines="1"
                         android:maxLength="4"
@@ -204,11 +204,28 @@
                         android:layout_marginStart="15dp"
                         android:paddingStart="10dp"
                         android:paddingEnd="5dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/rounded_edittext_bg"
                         android:hint="@string/enter_quantity"
                         android:inputType="number"
                         android:layout_marginBottom="5dp"/>
+                    <mehdi.sakout.fancybuttons.FancyButton
+                        android:id="@+id/btn_update_cart_edit_add_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="80dp"
+                        android:minHeight="30dp"
+                        android:paddingLeft="30dp"
+                        android:paddingTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingRight="30dp"
+                        android:paddingBottom="10dp"
+                        app:fb_defaultColor="@color/colorAccent"
+                        app:fb_radius="20dp"
+                        app:fb_text="Add Product"
+                        app:fb_textColor="#FFFFFF" />
                 </LinearLayout>
                 </androidx.cardview.widget.CardView>
                 <mehdi.sakout.fancybuttons.FancyButton
@@ -226,7 +243,7 @@
                     android:paddingBottom="10dp"
                     app:fb_defaultColor="@color/colorAccent"
                     app:fb_radius="20dp"
-                    app:fb_text="Update"
+                    app:fb_text="Update Order"
                     app:fb_textColor="#FFFFFF" />
             </LinearLayout>
         </LinearLayout>

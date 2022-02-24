@@ -16,11 +16,6 @@
         android:theme="@style/Theme.BDOF2H"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name=".EditActivity"
-            android:exported="false"
-            android:label="@string/title_activity_edit"
-            android:theme="@style/Theme.BDOF2H.NoActionBar" />
-        <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.BDOF2H.NoActionBar" >

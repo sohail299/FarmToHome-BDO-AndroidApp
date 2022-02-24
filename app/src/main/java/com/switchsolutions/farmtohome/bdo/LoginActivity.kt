@@ -4,8 +4,6 @@ package com.switchsolutions.farmtohome.bdo
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,9 +14,9 @@ import com.switchsolutions.farmtohome.bdo.databinding.ActivitySigninBinding
 import com.switchsolutions.farmtohome.bdo.enums.Type
 import com.switchsolutions.farmtohome.bdo.responsemodels.pojo.LoginResponseModel
 import com.switchsolutions.farmtohome.bdo.responsemodels.pojo.Roles
-import com.switchsolutions.farmtohome.bdo.room_db.BranchDatabase
-import com.switchsolutions.farmtohome.bdo.room_db.BranchEntityClass
-import com.switchsolutions.farmtohome.bdo.room_db.BranchRespository
+import com.switchsolutions.farmtohome.bdo.room_db.branch.BranchDatabase
+import com.switchsolutions.farmtohome.bdo.room_db.branch.BranchEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.branch.BranchRespository
 import com.switchsolutions.farmtohome.bdo.viewmodels.SignInViewModel
 
 
@@ -104,6 +102,7 @@ class LoginActivity : AppCompatActivity(),
                         if (loginResponseModel.data!!.siteBranches.isNotEmpty())
                         {
                             editor.putInt("cityId", loginResponseModel.data!!.siteBranches[0].value!!)
+                            editor.putString("BranchName", loginResponseModel.data!!.siteBranches[0].code!!)
                         }
                         editor.apply()
                         Toast.makeText(

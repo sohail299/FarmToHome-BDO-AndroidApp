@@ -1,11 +1,13 @@
 package com.switchsolutions.farmtohome.bdo.fragments
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -28,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.switchsolutions.farmtohome.bdo.LoginActivity
 import com.switchsolutions.farmtohome.bdo.MainActivity
 import com.switchsolutions.farmtohome.bdo.MainActivity.Companion.waitDilogFlag
 import com.switchsolutions.farmtohome.bdo.NotificationUtil
@@ -63,6 +66,8 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         var productQuantity: ArrayList<Int> = ArrayList()
         lateinit var singleOrder : ShowOrderDetail
         lateinit var editOrders: ArrayList<OrderProductsData>
+         var editOrdersTemp: ArrayList<OrderProductsData> = ArrayList()
+        @SuppressLint("StaticFieldLeak")
         lateinit var adapter: OrderEditAdapter
     }
 
@@ -74,11 +79,12 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
     private lateinit var editOrderResponseData: EditResponseModel
     private lateinit var editOrdersResponseData: GetOrdersForEditResponseModel
     private lateinit var editOrderDialog: Dialog
+    lateinit var delivDate: TextView
+    lateinit var etProducts: AutoCompleteTextView
+    lateinit var etProductsQuantit: EditText
 
     private lateinit var orders: ArrayList<DashBoardOrdersData>
-
     private lateinit var waitDialog: ProgressDialog
-
     private val MY_PREFS_NAME = "FarmToHomeBDO"
     var productId: Int = 0
     var productName: String = ""
@@ -88,14 +94,12 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val preferences =
-            requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
+        val preferences = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
         USER_STORED_CITY_ID = preferences.getInt("cityId", 1)
         USER_ID = preferences.getInt("User", 1)
         binding = DashboardFragmenttFragmentBinding.inflate(getLayoutInflater())
         return binding.root
     }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(DashboardFragmentViewModel::class.java)
@@ -106,6 +110,29 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         startObservers()
         startDeletionObservers()
         viewModel.startObserver()
+        viewModelEditOrders.status.observe(viewLifecycleOwner, Observer { it ->
+            it.getContentIfNotHandled()?.let {
+                editOrders = it.products
+                if (requisitionIdEdit == editOrdersResponseData.data.id)
+                {
+                    if (!dialoClicked) {
+                        editOrdersTemp.clear()
+                        dialoClicked = true
+                        for ((index) in editOrders.withIndex())
+                        editOrdersTemp.add(editOrders[index])
+                        showEditOrderDialog(editOrders, editOrdersResponseData.data)
+                    }
+                }
+            }
+        })
+
+        binding.rlDashboardRefresh.setOnRefreshListener {
+//            consumerAdapter.clearItems()
+//            showPageLoading()
+            startObservers()
+            startDeletionObservers()
+            viewModel.startObserver()
+        }
         // TODO: Use the ViewModel
     }
 
@@ -119,17 +146,16 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             }
         })
         viewModel.apiResponseSuccess.observe(viewLifecycleOwner, Observer {
+            binding.rlDashboardRefresh.isRefreshing = false
             if (waitDialog.isShowing) {
                 waitDilogFlag = false
                 waitDialog.dismiss()
             }
-
             dashboardResponseData = it
             orders = dashboardResponseData.data
 //            val adapter = DashboardAdapter(orders, View.OnClickListener(){
 //            })
-            val adapter =
-                DashboardAdapter(requireContext(), viewModel, viewModelEditOrders, orders) { item ->
+            val adapter = DashboardAdapter(requireContext(), viewModel, viewModelEditOrders, orders) { item ->
                     //Log.i("DialogClicked", dialoClicked.toString())
                     requisitionIdEdit = item.id!!
                     viewModelEditOrders.startObserver()
@@ -271,16 +297,10 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         viewModelEditOrders.apiResponseSuccess.observe(viewLifecycleOwner, Observer {
             if (waitDialog.isShowing) waitDialog.dismiss()
             editOrdersResponseData = it
-            editOrders = editOrdersResponseData.products
+           // editOrders = editOrdersResponseData.products
 //            val adapter = DashboardAdapter(orders, View.OnClickListener(){
 //            })
-            if (requisitionIdEdit == editOrdersResponseData.data.id)
-            {
-                if (!dialoClicked) {
-                    dialoClicked = true
-                    showEditOrderDialog(editOrders, editOrdersResponseData.data)
-                }
-        }
+
             //showEditOrderDialog()
         })
         viewModel.apiResponseFailure.observe(viewLifecycleOwner, Observer {
@@ -306,29 +326,26 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         })
 
     }
-
     fun triggerMainFragmentFunction(dashBoardOrdersData: DashBoardOrdersData) {
         editData = dashBoardOrdersData
     }
-
     fun showEditOrderDialog(products: ArrayList<OrderProductsData>, data: EditOrdersData) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        val inflater: LayoutInflater =
-            requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater: LayoutInflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogLayout: View = inflater.inflate(R.layout.custom_edit_product_dialog, null)
         val myCardView: CardView = dialogLayout.findViewById(R.id.cv_edit_order)
         val btnOk: FancyButton = dialogLayout.findViewById(R.id.btn_update_cart_edit)
+        val btnAddProduct: FancyButton = dialogLayout.findViewById(R.id.btn_update_cart_edit_add_product)
         val btnCloseDialog: ImageButton = dialogLayout.findViewById(R.id.cancel_product_image_cart)
         val custName: TextView = dialogLayout.findViewById(R.id.tv_customer_name_edit_dialog)
         val deliveryDateLayout: LinearLayout = dialogLayout.findViewById(R.id.ll_delivery_date)
-        val delivDate: TextView = dialogLayout.findViewById(R.id.tv_delivery_date_edit_dialog)
+        delivDate = dialogLayout.findViewById(R.id.tv_delivery_date_edit_dialog)
         val ivCalender: ImageView = dialogLayout.findViewById(R.id.iv_date_picker_edit)
         val recyclerView: RecyclerView = dialogLayout.findViewById(R.id.rv_edit_item_list)
-        val etProducts: AutoCompleteTextView =
-            dialogLayout.findViewById(R.id.et_select_product_edit)
+        etProducts = dialogLayout.findViewById(R.id.et_select_product_edit)
         val textProductsQuantity: TextView =
             dialogLayout.findViewById(R.id.tv_product_quantity_edit)
-        val etProductsQuantit: TextView =
+        etProductsQuantit =
             dialogLayout.findViewById(R.id.et_select_product_quantity_edit)
         adapter = OrderEditAdapter(viewModel, products, View.OnClickListener { item ->
             refreshAdapter()
@@ -363,7 +380,6 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
                     return
                 }
             }
-
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 if (etProducts.isPerformingCompletion) {
@@ -396,43 +412,86 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             datePick(delivDate, ivCalender)  //TODO change it
         }
         btnOk.setOnClickListener {
-            val productsArray = JsonArray()
-            dialoClicked = false
-            val editOrderObject = JsonObject()
-            editOrderObject.addProperty("customer_id", data.customer_id)
-            editOrderObject.addProperty("delivery_date", delivDate.text.toString())
-            editOrderObject.addProperty("request_id", data.id)
-            editOrderObject.addProperty("city_id", USER_STORED_CITY_ID)
-            for ((index) in products.withIndex()) {
-                val editOrderProducts = JsonObject()
-                editOrderProducts.addProperty("value", products[index].value)
-                editOrderProducts.addProperty("quantity", productQuantity[index])
-                editOrderProducts.addProperty("is_removed", 0)
-                productsArray.add(editOrderProducts)
-            }
-            if (etProducts.text.isNotEmpty() && etProductsQuantit.text.isNotEmpty()) {
-                val editOrderProducts = JsonObject()
-                editOrderProducts.addProperty("value", productId)
-                editOrderProducts.addProperty("quantity", etProductsQuantit.text.toString())
-                editOrderProducts.addProperty("is_removed", 0)
-                etProducts.setText("")
-                etProductsQuantit.text = ""
-                productsArray.add(editOrderProducts)
-            }
+            updateOrder(products, data)
+        }
 
-            editOrderObject.add("products", productsArray)
-            startEditObserver()
-            viewModelEdit.startObserver(editOrderObject)
+        btnAddProduct.setOnClickListener {
+            updateOrderLocally()
         }
         btnCloseDialog.setOnClickListener {
-            dialoClicked = false
-            if (waitDialog.isShowing)
-                waitDialog.dismiss()
-            editOrderDialog.dismiss()
+            if (editOrders != editOrdersTemp) {
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setMessage(this.getString(R.string.confirm_cancel))
+                        .setPositiveButton(this.getString(R.string.discard)) { dialog, _ ->
+                            editOrders = editOrdersTemp
+                            dialoClicked = false
+                            if (waitDialog.isShowing)
+                                waitDialog.dismiss()
+                            dialog.dismiss()
+                            editOrderDialog.dismiss()
+                            // logout user
+                            //delete feedback
+                        }
+                        .setNegativeButton(this.getString(R.string.cancel)) { dialog, _ ->
+                            // cancel delete process
+                            dialog.dismiss()
+                        }
+                    builder.show()
+                }
+            else {
+                dialoClicked = false
+                if (waitDialog.isShowing)
+                    waitDialog.dismiss()
+                editOrderDialog.dismiss()
+            }
         }
     }
 
-     fun refreshAdapter() {
+    private fun updateOrderLocally() {
+        if (etProducts.text.isNotEmpty() && etProductsQuantit.text.isNotEmpty()) {
+            val editOrderProducts = OrderProductsData()
+            editOrderProducts.label = etProducts.text.toString()
+            editOrderProducts.value = productId
+            editOrderProducts.unit = productUnit
+            editOrderProducts.quantity = etProductsQuantit.text.toString().toIntOrNull()
+            editOrderProducts.is_removed= "0"
+            etProducts.setText("")
+            etProductsQuantit.setText("")
+            editOrders.add(editOrderProducts)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun updateOrder(products: ArrayList<OrderProductsData>, data: EditOrdersData) {
+        val productsArray = JsonArray()
+        dialoClicked = false
+        val editOrderObject = JsonObject()
+        editOrderObject.addProperty("customer_id", data.customer_id)
+        editOrderObject.addProperty("delivery_date", delivDate.text.toString())
+        editOrderObject.addProperty("request_id", data.id)
+        editOrderObject.addProperty("city_id", USER_STORED_CITY_ID)
+        for ((index) in products.withIndex()) {
+            val editOrderProducts = JsonObject()
+            editOrderProducts.addProperty("value", products[index].value)
+            editOrderProducts.addProperty("quantity", productQuantity[index])
+            editOrderProducts.addProperty("is_removed", 0)
+            productsArray.add(editOrderProducts)
+        }
+        if (etProducts.text.isNotEmpty() && etProductsQuantit.text.isNotEmpty()) {
+            val editOrderProducts = JsonObject()
+            editOrderProducts.addProperty("value", productId)
+            editOrderProducts.addProperty("quantity", etProductsQuantit.text.toString())
+            editOrderProducts.addProperty("is_removed", 0)
+            etProducts.setText("")
+            etProductsQuantit.setText("")
+            productsArray.add(editOrderProducts)
+        }
+        editOrderObject.add("products", productsArray)
+        startEditObserver()
+        viewModelEdit.startObserver(editOrderObject)
+    }
+
+    fun refreshAdapter() {
         adapter.notifyDataSetChanged()
     }
 
@@ -451,12 +510,15 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             dialoClicked = false
             if (waitDialog.isShowing)
                 waitDialog.dismiss()
-            editOrderDialog.hide()
+            //editOrderDialog.hide()
             NotificationUtil.showShortToast(
                 context!!,
                 context!!.getString(R.string.order_updated),
                 Type.SUCCESS
             )
+            productQuantity.clear()
+            editOrdersTemp.clear()
+            editOrdersTemp = editOrders
             //orders = dashboardResponseData.data
 //            val adapter = DashboardAdapter(orders, View.OnClickListener(){
 //            })

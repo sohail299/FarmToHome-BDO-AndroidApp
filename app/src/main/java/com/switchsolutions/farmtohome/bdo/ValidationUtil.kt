@@ -6,7 +6,7 @@ class ValidationUtil {
     companion object {
 
         private val EMAIL_PATTERN : String = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-        private val NUMBER_PATTERN : String = "/^(03[0-6])[0-9]{8}\$"
+        private val NUMBER_PATTERN : String = "^(03[0-6])[0-9]{8}\$"
 
         fun isEmailValid(email : String) : Boolean{
             val pattern = Pattern.compile(EMAIL_PATTERN)
@@ -18,9 +18,9 @@ class ValidationUtil {
         }
 
         fun isPhoneNumberValid(msisdn : String) : Boolean{
-            return msisdn.length in 10..12
-//            val pattern = Pattern.compile(NUMBER_PATTERN)
-//            return msisdn.isNotBlank() && pattern.matcher(msisdn).matches()
+           // return msisdn.length in 10..12
+            val pattern = Pattern.compile(NUMBER_PATTERN)
+            return msisdn.isNotBlank() && pattern.matcher(msisdn).matches()
         }
 
         fun isUserNameValid(userName : String) : Boolean{

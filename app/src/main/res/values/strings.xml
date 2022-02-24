@@ -35,11 +35,14 @@
     <string name="delete">Delete</string>
     <string name="delivered">Delivered</string>
     <string name="cancel">Cancel</string>
+    <string name="update">Update</string>
     <string name="customer">Customer</string>
     <string name="product">Product</string>
     <string name="phone_number_is_invalid">Invalid Number</string>
     <string name="confirm_logout">Are you sure you want to Logout?</string>
+    <string name="confirm_cancel">You made changes in this order. Please select your option</string>
     <string name="logout">Logout</string>
+    <string name="discard">Discard</string>
     <string name="title_activity_edit">EditActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

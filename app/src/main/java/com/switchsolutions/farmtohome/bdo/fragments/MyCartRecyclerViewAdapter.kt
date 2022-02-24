@@ -1,16 +1,14 @@
 package com.switchsolutions.farmtohome.bdo.fragments
 
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.switchsolutions.farmtohome.bdo.CartViewModel
-import com.switchsolutions.farmtohome.bdo.MainActivity
 import com.switchsolutions.farmtohome.bdo.R
 import com.switchsolutions.farmtohome.bdo.databinding.CartItemListAdapterBinding
-import com.switchsolutions.farmtohome.bdo.databinding.CartListItemBinding
-import com.switchsolutions.farmtohome.bdo.room_db.CartEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartEntityClass
 
 class MyCartRecyclerViewAdapter( private val clickListener: (CartEntityClass) -> Unit) :
         RecyclerView.Adapter<MyViewHolder>() {
@@ -37,10 +35,8 @@ class MyCartRecyclerViewAdapter( private val clickListener: (CartEntityClass) ->
         subscribersList.addAll(subscribers)
     }
 }
-
 class MyViewHolder( val binding: CartItemListAdapterBinding, var quantity: Int) : RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(product: CartEntityClass,position: Int, clickListener: (CartEntityClass) -> Unit) {
+    fun bind(product: CartEntityClass, position: Int, clickListener: (CartEntityClass) -> Unit) {
         binding.productNameCart.text = product.productName
         binding.totalQtyCart.setText(product.quantity)
         binding.tvCustomerName.text = product.customerName
@@ -49,20 +45,38 @@ class MyViewHolder( val binding: CartItemListAdapterBinding, var quantity: Int) 
         binding.deleteProductImageCart.setOnClickListener {
             clickListener(product)
         }
+        binding.totalQtyCart.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (binding.totalQtyCart.text.toString().isNotEmpty())
+                product.quantity = s.toString()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (binding.totalQtyCart.text.toString().isNotEmpty())
+                    product.quantity = s.toString()
+            }
+        }
+
+        )
         binding.productQtyAddCart.setOnClickListener {
                 quantity = product.quantity.toIntOrNull()?.plus(1)!!
+                product.quantity = product.quantity.toIntOrNull()?.plus(1).toString()
                 CartFragment.productQuantity[position] = quantity.toString()
                 binding.totalQtyCart.setText(quantity.toString())
-                product.quantity = product.quantity.toIntOrNull()?.plus(1).toString()
+
 
 
         }
         binding.productQtyMinusCart.setOnClickListener {
             if ((product.quantity.toIntOrNull())!! > 1){
                 quantity = product.quantity.toIntOrNull()?.minus(1)!!
+                product.quantity = product.quantity.toIntOrNull()?.minus(1).toString()
             CartFragment.productQuantity[position] = quantity.toString()
             binding.totalQtyCart.setText(quantity.toString())
-            product.quantity = product.quantity.toIntOrNull()?.minus(1).toString()
+
         }
         }
     }

@@ -1,4 +1,4 @@
-package com.switchsolutions.farmtohome.bdo.room_db
+package com.switchsolutions.farmtohome.bdo.room_db.customer
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow

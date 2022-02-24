@@ -1,9 +1,9 @@
 package com.switchsolutions.farmtohome.bdo.viewmodels
 
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.JsonObject
 import com.switchsolutions.farmtohome.bdo.*
 import com.switchsolutions.farmtohome.bdo.adapters.DashboardAdapter
 import com.switchsolutions.farmtohome.bdo.api.RestApiClient
@@ -22,6 +22,10 @@ class GetOrdersToEditViewModel : ViewModel() {
     var apiResponseSuccess: MutableLiveData<GetOrdersForEditResponseModel> = MutableLiveData()
     var apiResponseFailure: MutableLiveData<ErrorDto> = MutableLiveData()
 
+    private val statusSuccess = MutableLiveData<Event<GetOrdersForEditResponseModel>>()
+    val status: MutableLiveData<Event<GetOrdersForEditResponseModel>>
+        get() = statusSuccess
+
     init {
         callSignInApi.value = false
     }
@@ -33,10 +37,13 @@ class GetOrdersToEditViewModel : ViewModel() {
                 callServer(RestApiClient.getClient(addHeaders = true).getOrdersToEdit(DashboardFragment.requisitionIdEdit))
             }
             override fun onSuccess(t: GetOrdersForEditResponseModel?) {
+                DashboardFragment.editOrders = t!!.products
+                apiResponseSuccess.value = t!!
                 callSignInApi.value = false
                 //saving user details
-                apiResponseSuccess.value = t!!
                 DashboardAdapter.dataEdit = t.products
+                statusSuccess.value = Event(t)
+
 
             }
             override fun onFailure(t: ErrorDto) {

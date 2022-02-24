@@ -5,10 +5,15 @@
     android:layout_height="match_parent"
     android:layout_marginTop="60dp"
     android:layout_marginBottom="60dp">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/rl_dashboard_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

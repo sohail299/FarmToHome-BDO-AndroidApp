@@ -1,4 +1,4 @@
-package com.switchsolutions.farmtohome.bdo.room_db
+package com.switchsolutions.farmtohome.bdo.room_db.product
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -2,8 +2,7 @@ package com.switchsolutions.farmtohome.bdo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.switchsolutions.farmtohome.bdo.room_db.CustomerRepository
-import com.switchsolutions.farmtohome.bdo.room_db.ProductRepository
+import com.switchsolutions.farmtohome.bdo.room_db.product.ProductRepository
 import java.lang.IllegalArgumentException
 
 class ProductViewModelFactory(

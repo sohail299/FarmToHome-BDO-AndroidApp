@@ -1,16 +1,12 @@
 package com.switchsolutions.farmtohome.bdo
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +14,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -26,9 +21,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.switchsolutions.farmtohome.bdo.adapters.OrderEditAdapter
 import com.switchsolutions.farmtohome.bdo.adapters.ViewSingleOrderAdapter
 import com.switchsolutions.farmtohome.bdo.callbacks.HttpStatusCodes
 import com.switchsolutions.farmtohome.bdo.databinding.ActivityMainBinding
@@ -39,7 +31,17 @@ import com.switchsolutions.farmtohome.bdo.interfaces.PlayBeep
 import com.switchsolutions.farmtohome.bdo.interfaces.ReplaceFragment
 import com.switchsolutions.farmtohome.bdo.interfaces.ShowOrderDetail
 import com.switchsolutions.farmtohome.bdo.responsemodels.*
-import com.switchsolutions.farmtohome.bdo.room_db.*
+import com.switchsolutions.farmtohome.bdo.room_db.branch.BranchDatabase
+import com.switchsolutions.farmtohome.bdo.room_db.branch.BranchRespository
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartDatabase
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartRepository
+import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerDatabase
+import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerRepository
+import com.switchsolutions.farmtohome.bdo.room_db.product.ProductDatabase
+import com.switchsolutions.farmtohome.bdo.room_db.product.ProductEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.product.ProductRepository
 import com.switchsolutions.farmtohome.bdo.viewmodels.CustomersApiViewModel
 import com.switchsolutions.farmtohome.bdo.viewmodels.DashboardFragmentViewModel
 import com.switchsolutions.farmtohome.bdo.viewmodels.ProductsApiViewModel
@@ -47,7 +49,6 @@ import mehdi.sakout.fancybuttons.FancyButton
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, ReplaceFragment, CartBadge, PlayBeep,
     ShowOrderDetail {
-
     companion object {
         var customerName: String = ""
         var customerId: Int = 0
@@ -66,11 +67,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         var productNamesData: ArrayList<String> = ArrayList()
         var productIdData: ArrayList<Int> = ArrayList()
         var productUnitData: ArrayList<String> = ArrayList()
-
         var branchNamesData: ArrayList<String> = ArrayList()
         var branchIdData: ArrayList<Int> = ArrayList()
     }
-
     private lateinit var binding: ActivityMainBinding
     private val ISLAMABAD_I9 = "Islamabad-I9"
     private val ISLAMABAD_G9 = "Islamabad-G9"
@@ -563,8 +562,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
     }
 
     override fun playBeep() {
-//        val mp: MediaPlayer = MediaPlayer.create(this, R.raw.confirmationbeep)
-//        mp.start()
+        val mp: MediaPlayer = MediaPlayer.create(this, R.raw.success_sound)
+        mp.start()
     }
 
     override fun showOrderDetails(reqId: Int) {

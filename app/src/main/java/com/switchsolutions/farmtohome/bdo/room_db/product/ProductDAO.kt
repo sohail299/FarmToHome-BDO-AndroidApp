@@ -1,7 +1,6 @@
-package com.switchsolutions.farmtohome.bdo.room_db
+package com.switchsolutions.farmtohome.bdo.room_db.product
 
 import androidx.room.*
-import com.switchsolutions.farmtohome.bdo.room_db.CartEntityClass
 import kotlinx.coroutines.flow.Flow
 
 @Dao

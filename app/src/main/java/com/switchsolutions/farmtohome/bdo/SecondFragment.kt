@@ -24,8 +24,7 @@ private var _binding: FragmentSecondBinding? = null
     ): View? {
 
       _binding = FragmentSecondBinding.inflate(inflater, container, false)
-      return binding.root
-
+      return binding.root//
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

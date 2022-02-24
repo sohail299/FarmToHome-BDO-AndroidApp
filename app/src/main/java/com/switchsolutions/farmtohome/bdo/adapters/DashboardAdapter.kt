@@ -43,9 +43,7 @@ class DashboardAdapter(private val context: Context, private var viewModel: Dash
 ) :
     RecyclerView.Adapter<DashboardAdapter.ViewHolder>() {
     companion object{
-        var dataEdit: ArrayList<OrderProductsData> = ArrayList()
     }
-    private lateinit var waitDialog: ProgressDialog
     private lateinit var viewContext: Context
     override fun onCreateViewHolder(
         parent: ViewGroup,

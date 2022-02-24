@@ -3,7 +3,6 @@ package com.switchsolutions.farmtohome.bdo.fragments
 import android.app.DatePickerDialog
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -25,6 +24,12 @@ import com.switchsolutions.farmtohome.bdo.databinding.CreateRequestFragmentBindi
 import com.switchsolutions.farmtohome.bdo.interfaces.CartBadge
 import com.switchsolutions.farmtohome.bdo.requestmodels.CreateBdoRequestModel
 import com.switchsolutions.farmtohome.bdo.room_db.*
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartDatabase
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartRepository
+import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerDatabase
+import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerRepository
 import com.switchsolutions.farmtohome.bdo.viewmodels.CreateRequestViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -56,14 +61,15 @@ class CreateRequestFragment : Fragment() {
     var productId : Int = 0
     var productName : String = ""
     var badgeCount: Int = 0
+    var previousProduct: Boolean = false
     var productUnit : String = ""
+    lateinit var itemToUpdate : CartEntityClass
     private val MY_PREFS_NAME = "FarmToHomeBDO"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = CreateRequestFragmentBinding.inflate(getLayoutInflater())
-
         val prefs = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
         customerId = prefs.getInt("customerId", 0) //0 is the default value.
         customerName = prefs.getString("customerName", "").toString() //"" is the default value.
@@ -83,7 +89,6 @@ class CreateRequestFragment : Fragment() {
         }
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val dao = CartDatabase.getInstance(requireContext()).cartDAO
@@ -201,31 +206,50 @@ class CreateRequestFragment : Fragment() {
                 inputMethodManager!!.hideSoftInputFromWindow(view.applicationWindowToken, 0)
                 binding.etSelectProduct.error = null
                 binding.etSelectProductQuantity.error= null
-                cartVM.saveOrUpdate(
-                    binding.etSelectProduct.text.toString(),
-                    productId,
-                    customerId,
-                    binding.etSelectProductQuantity.text.toString(),
-                    productUnit,
-                    binding.etSelectCustomer.text.toString(),
-                    binding.tvDateSelected.text.toString(),
-                    previousCustomerId
-                )
+                for ((index) in cartDataList.withIndex()){
+                    if (productId == cartDataList[index].productId) {
+                        itemToUpdate = cartDataList[index]
+                        itemToUpdate.quantity =(itemToUpdate.quantity.toIntOrNull()
+                            ?.plus(binding.etSelectProductQuantity.text.toString().toIntOrNull()!!)).toString()
+                        previousProduct = true
+                        break
+                    }
+                }
+                if (previousProduct) {
+                    cartVM.update(
+                        itemToUpdate
+                    )
+                    previousProduct = false
+                }
+                else
+                {
+                    cartVM.saveOrUpdate(
+                        binding.etSelectProduct.text.toString(),
+                        productId,
+                        customerId,
+                        binding.etSelectProductQuantity.text.toString(),
+                        productUnit,
+                        binding.etSelectCustomer.text.toString(),
+                        binding.tvDateSelected.text.toString(),
+                        previousCustomerId
+                    )
+                    val editor = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE).edit()
+                    badgeCount += 1
+                    editor.putInt("badgeCount", badgeCount)
+                    editor.putInt("customerId", customerId)
+                    editor.putString("customerName", binding.etSelectCustomer.text.toString())
+                    editor.putString("customerDeliveryDate", binding.tvDateSelected.text.toString())
+                    editor.apply()
+                    previousCustomerId = customerId
+                    val cb : CartBadge = activity as CartBadge
+                    cb.cartBadge(badgeCount)
+                }
                 MainActivity.customerName = binding.etSelectCustomer.text.toString()
                 MainActivity.customerId = customerId
                 MainActivity.deliveryDate = binding.tvDateSelected.text.toString()
                 binding.etSelectProduct.setText("")
                 binding.etSelectProductQuantity.setText("")
-                val editor = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE).edit()
-                badgeCount += 1
-                editor.putInt("badgeCount", badgeCount)
-                editor.putInt("customerId", customerId)
-                editor.putString("customerName", binding.etSelectCustomer.text.toString())
-                editor.putString("customerDeliveryDate", binding.tvDateSelected.text.toString())
-                editor.apply()
-                previousCustomerId = customerId
-                val cb : CartBadge = activity as CartBadge
-                cb.cartBadge(badgeCount)
+
                 Toast.makeText(requireContext(), "Added To Cart", Toast.LENGTH_SHORT).show()
             }
             else {

@@ -1,8 +1,8 @@
 package com.switchsolutions.farmtohome.bdo
 
 import androidx.lifecycle.*
-import com.switchsolutions.farmtohome.bdo.room_db.CustomerEntityClass
-import com.switchsolutions.farmtohome.bdo.room_db.CustomerRepository
+import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 

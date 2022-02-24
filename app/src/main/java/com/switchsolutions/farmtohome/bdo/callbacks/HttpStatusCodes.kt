@@ -55,9 +55,9 @@ interface HttpStatusCodes {
 
         // --- 4xx Client Error ---
         /** <tt>400 Bad Request</tt> (HTTP/1.1 - RFC 2616)  */
-        val SC_UNAUTHORIZED = 400
+        val SC_BAD_REQUEST = 400
         /** <tt>401 Unauthorized</tt> (HTTP/1.0 - RFC 1945)  */
-        val SC_BAD_REQUEST = 401
+        val SC_UNAUTHORIZED = 401
         /** <tt>402 Payment Required</tt> (HTTP/1.1 - RFC 2616)  */
         val SC_PAYMENT_REQUIRED = 402
         /** <tt>403 Forbidden</tt> (HTTP/1.0 - RFC 1945)  */

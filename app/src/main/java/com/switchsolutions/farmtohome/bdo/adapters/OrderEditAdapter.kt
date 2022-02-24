@@ -2,6 +2,8 @@ package com.switchsolutions.farmtohome.bdo.adapters
 
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -66,25 +68,44 @@ class OrderEditAdapter(private var viewModel: DashboardFragmentViewModel,
             editQuantity.setText(item.quantity!!.toString())
             textViewProductUnit.text = item.unit
             DashboardFragment.productQuantity.add(item.quantity!!)
+
+            editQuantity.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    if (editQuantity.text.toString().isNotEmpty())
+                        item.quantity = s.toString().toIntOrNull()
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (editQuantity.text.toString().isNotEmpty())
+                        item.quantity = s.toString().toIntOrNull()
+                }
+            }
+            )
             addBtn.setOnClickListener {
                 quantity = item.quantity!!.plus(1)
+                item.quantity = item.quantity!!.plus(1)
                 DashboardFragment.productQuantity[position] = quantity
                 editQuantity.setText(quantity.toString())
-                item.quantity = item.quantity!!.plus(1)
+
             }
             minusBtn.setOnClickListener {
                 if (item.quantity!! > 1) {
                     quantity = item.quantity!!.minus(1)
+                    item.quantity = item.quantity!!.minus(1)
                     DashboardFragment.productQuantity[position] = quantity
                     editQuantity.setText(quantity.toString())
-                    item.quantity = item.quantity!!.minus(1)
+
                 }
             }
 
             removeItemBtn.setOnClickListener {
-                DashboardFragment.editOrders.removeAt(position)
-                DashboardFragment.adapter.notifyItemRemoved(position)
-
+                if (DashboardFragment.editOrders.size > 1) {
+                    DashboardFragment.editOrders.removeAt(position)
+                    DashboardFragment.adapter.notifyItemRemoved(position)
+                    DashboardFragment.adapter.notifyDataSetChanged()
+                }
 
             }
         }

@@ -1,10 +1,8 @@
 package com.switchsolutions.farmtohome.bdo
 
 import androidx.lifecycle.*
-import com.switchsolutions.farmtohome.bdo.room_db.CartEntityClass
-import com.switchsolutions.farmtohome.bdo.room_db.CartRepository
-import com.switchsolutions.farmtohome.bdo.room_db.ProductDatabase
-import com.switchsolutions.farmtohome.bdo.room_db.ProductRepository
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -30,6 +28,11 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
         inputQuantity.value = product.quantity
         isUpdateOrDelete = true
         subscriberToUpdateOrDelete = product
+    }
+
+    fun update(entityClass: CartEntityClass){
+            updateCartProduct(entityClass)
+
     }
 
     fun saveOrUpdate(productName: String,productId: Int, customerId: Int,  quantity: String, unit: String,  customerName: String, deliveryDate: String, previousCustomerId: Int ) {

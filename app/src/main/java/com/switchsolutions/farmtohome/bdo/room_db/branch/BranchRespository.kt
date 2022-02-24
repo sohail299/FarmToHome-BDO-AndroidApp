@@ -1,8 +1,7 @@
-package com.switchsolutions.farmtohome.bdo.room_db
+package com.switchsolutions.farmtohome.bdo.room_db.branch
 
 
-
-class BranchRespository(private val branchDao: LocationsDAO) {
+class BranchRespository(private val branchDao: BranchDAO) {
 
     val branch = branchDao.getAllBranches()
 

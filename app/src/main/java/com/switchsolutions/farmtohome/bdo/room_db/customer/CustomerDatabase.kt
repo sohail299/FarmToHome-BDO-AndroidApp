@@ -1,25 +1,26 @@
-package com.switchsolutions.farmtohome.bdo.room_db
+package com.switchsolutions.farmtohome.bdo.room_db.customer
+
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [CartEntityClass::class], version = 1)
-abstract class CartDatabase : RoomDatabase() {
-    abstract val cartDAO: CartDAO
+@Database(entities = [CustomerEntityClass::class], version = 1)
+abstract class CustomerDatabase : RoomDatabase() {
+    abstract val customerDAO: CustomerDAO
 
     companion object {
         @Volatile
-        private var INSTANCE: CartDatabase? = null
-        fun getInstance(context: Context): CartDatabase {
+        private var INSTANCE: CustomerDatabase? = null
+        fun getInstance(context: Context): CustomerDatabase {
             synchronized(this) {
                 var instance = INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        CartDatabase::class.java,
-                        "cart_data_database"
+                        CustomerDatabase::class.java,
+                        "customer_data_database"
                     ).build()
                 }
                 return instance
@@ -27,4 +28,5 @@ abstract class CartDatabase : RoomDatabase() {
         }
     }
 }
+
 

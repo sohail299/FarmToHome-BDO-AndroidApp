@@ -7,7 +7,6 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,12 +27,13 @@ import com.switchsolutions.farmtohome.bdo.callbacks.HttpStatusCodes
 import com.switchsolutions.farmtohome.bdo.databinding.CreateCartFragmentBinding
 import com.switchsolutions.farmtohome.bdo.enums.Type
 import com.switchsolutions.farmtohome.bdo.interfaces.CartBadge
+import com.switchsolutions.farmtohome.bdo.interfaces.PlayBeep
 import com.switchsolutions.farmtohome.bdo.interfaces.ReplaceFragment
 import com.switchsolutions.farmtohome.bdo.responsemodels.BDORequestResponsemodel
 import com.switchsolutions.farmtohome.bdo.responsemodels.CartItems
-import com.switchsolutions.farmtohome.bdo.room_db.CartDatabase
-import com.switchsolutions.farmtohome.bdo.room_db.CartEntityClass
-import com.switchsolutions.farmtohome.bdo.room_db.CartRepository
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartDatabase
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartEntityClass
+import com.switchsolutions.farmtohome.bdo.room_db.cart.CartRepository
 import com.switchsolutions.farmtohome.bdo.viewmodels.SubmitCartViewModel
 import mehdi.sakout.fancybuttons.FancyButton
 
@@ -45,7 +45,6 @@ class CartFragment : Fragment() {
         fun newInstance() = CartFragment()
          var productQuantity: ArrayList<String> = ArrayList()
     }
-
     private lateinit var cartViewModel: CartViewModel
     private lateinit var adapter: MyCartRecyclerViewAdapter
     lateinit var binding: CreateCartFragmentBinding
@@ -58,6 +57,7 @@ class CartFragment : Fragment() {
     private lateinit var submissionDataResponse: BDORequestResponsemodel
     var customerId: Int = 0
     var cityId: Int = 0
+    var badgeCount: Int = 0
     private val MY_PREFS_NAME = "FarmToHomeBDO"
     var customerName: String = ""
     var deliveryDate: String = ""
@@ -69,6 +69,7 @@ class CartFragment : Fragment() {
         val prefs = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
         customerId = prefs.getInt("customerId", 0)
         cityId = prefs.getInt("cityId", 1)
+        badgeCount = prefs.getInt("badgeCount", 0)
         customerId = prefs.getInt("customerId", 1) //0 is the default value.
         customerName = prefs.getString("customerName", "").toString() //0 is the default value.
         deliveryDate =
@@ -140,6 +141,7 @@ class CartFragment : Fragment() {
 //            val adapter = DashboardAdapter(orders, View.OnClickListener(){
 //            })
             //showEditOrderDialog()
+            productQuantity.clear()
             cartViewModel.clearAll()
             clearCart()
 
@@ -186,15 +188,15 @@ class CartFragment : Fragment() {
         //binding = CreateCartFragmentBinding.inflate(layoutInflater)
         binding.cartRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = MyCartRecyclerViewAdapter { selectedItem: CartEntityClass ->
-            listItemClicked(
-                selectedItem
-            )
+            listItemClicked(selectedItem)
         }
         binding.cartRecyclerView.adapter = adapter
         displaySubscribersList()
     }
 
     fun showSubmissionSuccessMessage() {
+        val pb: PlayBeep = activity as PlayBeep
+        pb.playBeep()
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         val inflater: LayoutInflater =
             requireContext().getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -264,6 +266,12 @@ class CartFragment : Fragment() {
 
     private fun listItemClicked(product: CartEntityClass) {
         cartViewModel.deleteProduct(product)
+        badgeCount -= 1
+        val editor = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE).edit()
+        editor.putInt("badgeCount", badgeCount)
+        editor.apply()
+        val cb : CartBadge = activity as CartBadge
+        cb.cartBadge(badgeCount)
     }
 
 }
