@@ -7,6 +7,9 @@
             name="myCartViewModel"
             type="com.switchsolutions.farmtohome.bdo.CartViewModel" />
     </data>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -113,4 +116,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cart_recycler_view" />
     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

@@ -49,6 +49,7 @@ class CartFragment : Fragment() {
     private lateinit var adapter: MyCartRecyclerViewAdapter
     lateinit var binding: CreateCartFragmentBinding
     lateinit var cartDataList: List<CartEntityClass>
+    lateinit var cartDataListCheck: List<CartEntityClass>
     lateinit var product: CartEntityClass
 
     private lateinit var submitViewModel: SubmitCartViewModel
@@ -94,7 +95,8 @@ class CartFragment : Fragment() {
             }
         })
         binding.btnSubmitCart.setOnClickListener {
-            val productsArray = JsonArray()
+            if (cartDataListCheck.isNotEmpty()) {
+                val productsArray = JsonArray()
 
 //                placeOrderJson.addProperty("customer_id", 9241)
 //                placeOrderJson.addProperty("delivery_date", "2022-03-12")
@@ -108,23 +110,27 @@ class CartFragment : Fragment() {
 //                productsArray.add(productObject)
 //                placeOrderJson.add("products", productsArray)
 //                CreateBdoRequestService(requireContext(), placeOrderJson )
-            if (cartDataList.isNotEmpty()) {
-                placeOrderJson.addProperty("customer_id", customerId)
-                placeOrderJson.addProperty("delivery_date", deliveryDate)
-                placeOrderJson.addProperty("city_id", cityId)
-                for ((index) in cartDataList.withIndex()) {
-                    product = cartDataList[index]
-                    val productObject = JsonObject()
-                    productObject.addProperty("name", cartDataList[index].productId)
-                    productObject.addProperty("value", productQuantity[index])
-                    Log.i("ProductQuantity", product.quantity)
-                    productObject.addProperty("is_removed", 0)
-                    productsArray.add(productObject)
+                if (cartDataList.isNotEmpty()) {
+                    placeOrderJson.addProperty("customer_id", customerId)
+                    placeOrderJson.addProperty("delivery_date", deliveryDate)
+                    placeOrderJson.addProperty("city_id", cityId)
+                    for ((index) in cartDataList.withIndex()) {
+                        product = cartDataList[index]
+                        val productObject = JsonObject()
+                        productObject.addProperty("name", cartDataList[index].productId)
+                        productObject.addProperty("value", productQuantity[index])
+                        Log.i("ProductQuantity", product.quantity)
+                        productObject.addProperty("is_removed", 0)
+                        productsArray.add(productObject)
+                    }
+                    placeOrderJson.add("products", productsArray)
+                    //CreateBdoRequestService(cartViewModel, this, requireContext(), placeOrderJson).callApi()
+                    startObservers()
+                    submitViewModel.startObserver()
                 }
-                placeOrderJson.add("products", productsArray)
-                //CreateBdoRequestService(cartViewModel, this, requireContext(), placeOrderJson).callApi()
-                startObservers()
-                submitViewModel.startObserver()
+            }
+            else {
+                Toast.makeText(requireContext(), "Please add items to Cart before submitting order.", Toast.LENGTH_LONG).show()
             }
         }
         initRecyclerView()
@@ -144,8 +150,7 @@ class CartFragment : Fragment() {
             //showEditOrderDialog()
             productQuantity.clear()
             cartViewModel.clearAll()
-            clearCart()
-
+            clearCartAfterSubmission()
             showSubmissionSuccessMessage()
             initRecyclerView()
         })
@@ -172,8 +177,9 @@ class CartFragment : Fragment() {
             }
         })
     }
-    private fun clearCart() {
-
+    private fun clearCartAfterSubmission() {
+        binding.btnSubmitCart.visibility = View.GONE
+        binding.cvCartCustomerDetails.visibility = View.GONE
         val editor = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE).edit()
         editor.putInt("badgeCount", 0)
         editor.putInt("customerId", 0) //0 is the default value.
@@ -182,7 +188,6 @@ class CartFragment : Fragment() {
         editor.apply()
         val cb : CartBadge = activity as CartBadge
         cb.cartBadge(0)
-
     }
 
     fun initRecyclerView() {
@@ -251,30 +256,40 @@ class CartFragment : Fragment() {
 
     private fun displaySubscribersList() {
         cartViewModel.getSavedProducts().observe(viewLifecycleOwner, Observer {
+            cartDataListCheck = it
             if (it.isNotEmpty()) {
                 cartDataList = it
                 binding.btnSubmitCart.visibility = View.VISIBLE
                 binding.cvCartCustomerDetails.visibility = View.VISIBLE
                 adapter.setList(it)
                 adapter.notifyDataSetChanged()
-            } else {
-               clearCart()
-                binding.btnSubmitCart.visibility = View.GONE
-                binding.cvCartCustomerDetails.visibility = View.GONE
+            } else if (customerName.isNotEmpty() && customerId != 0) {
+                binding.btnSubmitCart.visibility = View.VISIBLE
+                binding.cvCartCustomerDetails.visibility = View.VISIBLE
                 adapter.setList(it)
                 adapter.notifyDataSetChanged()
+            }
+            else {
+                clearCartAfterSubmission()
+                binding.btnSubmitCart.visibility = View.GONE
+                binding.cvCartCustomerDetails.visibility = View.GONE
             }
         })
     }
 
     private fun listItemClicked(product: CartEntityClass) {
-        cartViewModel.deleteProduct(product)
-        badgeCount -= 1
-        val editor = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE).edit()
-        editor.putInt("badgeCount", badgeCount)
-        editor.apply()
-        val cb : CartBadge = activity as CartBadge
-        cb.cartBadge(badgeCount)
+        Log.i("cartItemSize", cartDataList.size.toString())
+        if (cartDataList.isNotEmpty()) {
+            cartViewModel.deleteProduct(product)
+            badgeCount -= 1
+            val editor =
+                requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
+                    .edit()
+            editor.putInt("badgeCount", badgeCount)
+            editor.apply()
+            val cb: CartBadge = activity as CartBadge
+            cb.cartBadge(badgeCount)
+        }
     }
 
 }

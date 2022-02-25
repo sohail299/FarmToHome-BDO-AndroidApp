@@ -75,6 +75,8 @@ class CreateRequestFragment : Fragment() {
         val prefs = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
         customerId = prefs.getInt("customerId", 0) //0 is the default value.
         customerName = prefs.getString("customerName", "").toString() //"" is the default value.
+        if (customerName.isNotEmpty())
+            customerSelected = true
         deliveryDate = prefs.getString("customerDeliveryDate", "" ).toString()
         badgeCount = prefs.getInt("badgeCount", 0)
         productListingAdapter = AddProductsAdapter(requireContext(), ArrayList<String>())
@@ -153,7 +155,7 @@ class CreateRequestFragment : Fragment() {
                     binding.etSelectCustomer.error = null
                     return
                 }
-                if (binding.etSelectCustomer.text.toString().isEmpty())
+                if (binding.etSelectCustomer.text.toString().isNotEmpty())
                 binding.etSelectCustomer.error = "Choose Customer"
                 else {
                     customerSelected = false
@@ -191,7 +193,7 @@ class CreateRequestFragment : Fragment() {
                     binding.etSelectProduct.error = null
                     return
                 }
-                if (binding.etSelectProduct.text.toString().isEmpty())
+                if (binding.etSelectProduct.text.toString().isNotEmpty())
                 binding.etSelectProduct.error = "Choose Product"
                 else {
                     binding.etSelectProduct.error = null
@@ -202,6 +204,7 @@ class CreateRequestFragment : Fragment() {
 
         binding.btnAddToCart.setOnClickListener {
             if (binding.etSelectCustomer.text.isEmpty() || !customerSelected) {
+                Log.i("customerSelected", customerSelected.toString())
                 binding.etSelectCustomer.error = "Choose Customer"
             } else if (binding.tvDateSelected.text.equals("dd/mm/yyyy")) {
                 binding.ivDatePicker.setImageResource(R.drawable.calendar_error)
@@ -259,7 +262,6 @@ class CreateRequestFragment : Fragment() {
                 MainActivity.deliveryDate = binding.tvDateSelected.text.toString()
                 binding.etSelectProduct.setText("")
                 binding.etSelectProductQuantity.setText("")
-                    customerSelected = false
                 productSelected = false
                 Toast.makeText(requireContext(), "Added To Cart", Toast.LENGTH_SHORT).show()
             }
@@ -288,7 +290,6 @@ class CreateRequestFragment : Fragment() {
                 previousCustomerId = customerId
                 val cb : CartBadge = activity as CartBadge
                 cb.cartBadge(badgeCount)
-                customerSelected = false
                 productSelected = false
                 Toast.makeText(requireContext(), "Added To Cart", Toast.LENGTH_SHORT).show()
             }

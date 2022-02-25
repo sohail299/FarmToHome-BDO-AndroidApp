@@ -52,12 +52,12 @@
             android:id="@+id/view_divider"
             android:layout_width="3dp"
             android:layout_height="30dp"
-            android:layout_marginStart="56dp"
+            android:layout_marginStart="32dp"
             android:background="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/product_unit_and_quantity_cart"
             app:layout_constraintTop_toBottomOf="@+id/product_name_edit"
-            app:layout_constraintVertical_bias="0.567" />
+            app:layout_constraintVertical_bias="0.555" />
 
         <TextView
             android:id="@+id/product_unit_and_quantity_cart2"
@@ -79,15 +79,13 @@
             android:id="@+id/total_price_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
+            android:layout_marginStart="88dp"
             android:fontFamily="@font/montserrat"
             android:text="Quantity"
             android:textColor="#2E2E2E"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/product_unit_and_quantity_cart"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
-            app:layout_constraintHorizontal_bias="0.305"
             app:layout_constraintStart_toEndOf="@+id/product_unit_and_quantity_cart"
             app:layout_constraintTop_toTopOf="@+id/product_unit_and_quantity_cart"
             app:layout_constraintVertical_bias="0.0" />
@@ -117,15 +115,6 @@
             app:layout_constraintStart_toStartOf="@+id/total_price_cart"
             app:layout_constraintTop_toBottomOf="@+id/total_price_cart" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="39dp"
-            android:layout_height="36dp"
-            android:text="Button"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

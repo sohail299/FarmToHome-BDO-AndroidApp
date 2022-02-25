@@ -17,7 +17,7 @@ import timber.log.Timber
 
 class GetOrdersToEditViewModel : ViewModel() {
 
-    var callSignInApi: MutableLiveData<Boolean> = MutableLiveData()
+
 
     var apiResponseSuccess: MutableLiveData<GetOrdersForEditResponseModel> = MutableLiveData()
     var apiResponseFailure: MutableLiveData<ErrorDto> = MutableLiveData()
@@ -27,11 +27,13 @@ class GetOrdersToEditViewModel : ViewModel() {
     val status: MutableLiveData<Event<GetOrdersForEditResponseModel>>
         get() = statusSuccess
 
-    init {
-        callSignInApi.value = false
-    }
+    val callEditApi: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val ApiStatus: MutableLiveData<Event<Boolean>>
+        get() = callEditApi
+
+
     fun startObserver() {
-        callSignInApi.value = true
+        callEditApi.value = Event(true)
         //call api here
         object : RetrofitApiManager<GetOrdersForEditResponseModel>(AppController.ApplicationContext) {
             init {
@@ -40,14 +42,13 @@ class GetOrdersToEditViewModel : ViewModel() {
             override fun onSuccess(t: GetOrdersForEditResponseModel?) {
                 DashboardFragment.editOrders = t!!.products
                 apiResponseSuccess.value = t!!
-                callSignInApi.value = false
+                callEditApi.value = Event(false)
                 //saving user details
                 statusSuccess.value = Event(t)
-
             }
             override fun onFailure(t: ErrorDto) {
                 Timber.e(t.message)
-                callSignInApi.value = false
+                callEditApi.value = Event(false)
                 apiResponseFailure.value = t
             }
             override fun tokenRefreshed() {

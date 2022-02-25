@@ -122,7 +122,7 @@ class DashboardAdapter(private val context: Context, private var viewModel: Dash
         var relativeLayout: ConstraintLayout
         var tvDeliveryDate: TextView
         var tvRequestId: TextView
-        var ivEditOrder : ImageView
+        var ivEditOrder : LinearLayout
         var ivDeleteOrder: ImageView
         var cardView: CardView
         init {
@@ -130,7 +130,7 @@ class DashboardAdapter(private val context: Context, private var viewModel: Dash
             tvDeliveryDate = itemView.findViewById<View>(R.id.tv_delivery_date) as TextView
             tvRequestId = itemView.findViewById<View>(R.id.tv_request_id) as TextView
             relativeLayout = itemView.findViewById<View>(R.id.constraint_layout) as ConstraintLayout
-            ivEditOrder = itemView.findViewById(R.id.iv_edit_order) as ImageView
+            ivEditOrder = itemView.findViewById(R.id.ll_edit) as LinearLayout
             ivDeleteOrder = itemView.findViewById(R.id.iv_remove_order) as ImageView
             cardView = itemView.findViewById(R.id.cardview_items) as CardView
         }

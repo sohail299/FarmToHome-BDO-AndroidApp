@@ -64,6 +64,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         var dialoClicked = false
         fun newInstance() = DashboardFragment()
         var productQuantity: ArrayList<Int> = ArrayList()
+        var product_counter: ArrayList<Int> = ArrayList()
         lateinit var singleOrder : ShowOrderDetail
         lateinit var editOrders: ArrayList<OrderProductsData>
          var editOrdersTemp: ArrayList<OrderProductsData> = ArrayList()
@@ -116,11 +117,28 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
                 {
                     if (!dialoClicked) {
                         editOrdersTemp.clear()
+                        product_counter.clear()
                         dialoClicked = true
-                        for ((index) in editOrders.withIndex())
-                        editOrdersTemp.add(editOrders[index])
-                        showEditOrderDialog(editOrders, viewModelEditOrders.apiResponseSuccess.value!!.data)
+                        for ((index) in editOrders.withIndex()) {
+                            editOrdersTemp.add(editOrders[index])
+                            product_counter.add(index + 1)
+                        }
+                        showEditOrderDialog(editOrders, viewModelEditOrders.apiResponseSuccess.value!!.data, product_counter)
                     }
+                }
+            }
+        })
+
+        viewModelEditOrders.ApiStatus.observe(viewLifecycleOwner, Observer { it ->
+            it.getContentIfNotHandled()?.let {
+                if (it)
+                {
+                    waitDialog = ProgressDialog.show(requireContext(), "", "Please wait")
+                }
+                else
+                {
+                    if (waitDialog.isShowing)
+                        waitDialog.dismiss()
                 }
             }
         })
@@ -327,7 +345,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
     fun triggerMainFragmentFunction(dashBoardOrdersData: DashBoardOrdersData) {
         editData = dashBoardOrdersData
     }
-    fun showEditOrderDialog(products: ArrayList<OrderProductsData>, data: EditOrdersData) {
+    fun showEditOrderDialog(products: ArrayList<OrderProductsData>, data: EditOrdersData, count: ArrayList<Int>) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         val inflater: LayoutInflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val dialogLayout: View = inflater.inflate(R.layout.custom_edit_product_dialog, null)
@@ -336,6 +354,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         val btnAddProduct: FancyButton = dialogLayout.findViewById(R.id.btn_update_cart_edit_add_product)
         val btnCloseDialog: ImageButton = dialogLayout.findViewById(R.id.cancel_product_image_cart)
         val custName: TextView = dialogLayout.findViewById(R.id.tv_customer_name_edit_dialog)
+        val reqId: TextView = dialogLayout.findViewById(R.id.tv_customer_order_req_id)
         val deliveryDateLayout: LinearLayout = dialogLayout.findViewById(R.id.ll_delivery_date)
         delivDate = dialogLayout.findViewById(R.id.tv_delivery_date_edit_dialog)
         val ivCalender: ImageView = dialogLayout.findViewById(R.id.iv_date_picker_edit)
@@ -345,7 +364,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             dialogLayout.findViewById(R.id.tv_product_quantity_edit)
         etProductsQuantit =
             dialogLayout.findViewById(R.id.et_select_product_quantity_edit)
-        adapter = OrderEditAdapter(viewModel, products, View.OnClickListener { item ->
+        adapter = OrderEditAdapter(viewModel, products, count, View.OnClickListener { item ->
             refreshAdapter()
         })
         recyclerView.setHasFixedSize(true)
@@ -403,6 +422,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             waitDialog.dismiss()
         custName.text = data.customer
         delivDate.text = data.delivery_date
+        reqId.text = data.id.toString()
         // Create an ArrayAdapter using a simple spinner layout and languages array
         // Set layout to use when the list of choices appear
         // Set Adapter to Spinner
@@ -410,7 +430,10 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             datePick(delivDate, ivCalender)  //TODO change it
         }
         btnOk.setOnClickListener {
+            if (editOrders.size >= 1)
             updateOrder(products, data)
+            else
+                Toast.makeText(requireContext(), "At least one item should be in the order.", Toast.LENGTH_LONG).show()
         }
 
         btnAddProduct.setOnClickListener {
@@ -447,6 +470,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private fun updateOrderLocally() {
         if (etProducts.text.isNotEmpty() && etProductsQuantit.text.isNotEmpty()) {
+            product_counter.add(product_counter.size+1)
             val editOrderProducts = OrderProductsData()
             editOrderProducts.label = etProducts.text.toString()
             editOrderProducts.value = productId
@@ -475,7 +499,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             for ((index) in products.withIndex()) {
                 val editOrderProducts = JsonObject()
                 editOrderProducts.addProperty("value", products[index].value)
-                editOrderProducts.addProperty("quantity", productQuantity[index])
+                editOrderProducts.addProperty("quantity", products[index].quantity)
                 editOrderProducts.addProperty("is_removed", 0)
                 productsArray.add(editOrderProducts)
             }
@@ -521,6 +545,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             )
             productQuantity.clear()
             editOrdersTemp.clear()
+            product_counter.clear()
             editOrdersTemp = editOrders
             //orders = dashboardResponseData.data
 //            val adapter = DashboardAdapter(orders, View.OnClickListener(){
