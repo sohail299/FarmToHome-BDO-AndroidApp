@@ -48,7 +48,7 @@ abstract class RetrofitApiManager<T>(context: Context) : Callback<T>, IOnTokenRe
                 else -> responseFailure(ErrorDto(response.message(), response.code()))
             }
         }else{
-            if(response.code() == HttpStatusCodes.SC_UNAUTHORIZED && (!call?.request()?.url?.toString()?.startsWith("http://admintest.farmtohome.com.pk/api/")!!)) {
+            if(response.code() == HttpStatusCodes.SC_UNAUTHORIZED && (!call?.request()?.url?.toString()?.startsWith("http://apt.farmtohome.com.pk/api/")!!)) {
                 Timber.d(mContext.getString(R.string.unauthrozed))
 //                    responseFailure(ErrorDto(mContext.getString(R.string.unauthrozed), HttpStatusCodes.SC_UNAUTHORIZED))
             }else{

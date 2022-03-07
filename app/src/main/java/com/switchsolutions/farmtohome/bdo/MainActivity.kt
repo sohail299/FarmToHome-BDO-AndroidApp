@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         var productUnitData: ArrayList<String> = ArrayList()
         var branchNamesData: ArrayList<String> = ArrayList()
         var branchIdData: ArrayList<Int> = ArrayList()
+        var productQuantity: ArrayList<String> = ArrayList()
     }
     private lateinit var binding: ActivityMainBinding
     private val ISLAMABAD_I9 = "Islamabad-I9"
@@ -423,6 +424,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
 
     }
     fun getBranches(){
+        branchNamesData.clear()
+        branchIdData.clear()
         if (branchNamesData.isEmpty() || branchIdData.isEmpty()) {
             val daoBranch = BranchDatabase.getInstance(this).branchDAO
             val repositoryBranch = BranchRespository(daoBranch)
@@ -512,11 +515,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                NotificationUtil.showShortToast(
-                    this,
-                    this.getString(R.string.error_occurred),
-                    Type.DANGER
-                )
+//                NotificationUtil.showShortToast(
+//                    this,
+//                    this.getString(R.string.error_occurred)+it.message,
+//                    Type.DANGER
+//                )
             }
         })
 
@@ -546,11 +549,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                NotificationUtil.showShortToast(
-                    this,
-                    this.getString(R.string.error_occurred),
-                    Type.DANGER
-                )
+//                NotificationUtil.showShortToast(
+//                    this,
+//                    this.getString(R.string.error_occurred)+it.message,
+//                    Type.DANGER
+//                )
             }
         })
     }
@@ -609,11 +612,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                NotificationUtil.showShortToast(
-                    this,
-                    this.getString(R.string.error_occurred),
-                    Type.DANGER
-                )
+//                NotificationUtil.showShortToast(
+//                    this,
+//                    this.getString(R.string.error_occurred)+it.message,
+//                    Type.DANGER
+//                )
             }
         })
     }

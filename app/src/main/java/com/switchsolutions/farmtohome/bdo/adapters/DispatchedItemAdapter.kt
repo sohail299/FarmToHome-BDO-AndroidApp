@@ -19,7 +19,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.gson.JsonObject
+import com.switchsolutions.farmtohome.bdo.MainActivity
 import com.switchsolutions.farmtohome.bdo.R
+import com.switchsolutions.farmtohome.bdo.fragments.DeliveredFragment
+import com.switchsolutions.farmtohome.bdo.fragments.DispatchFragment.Companion.singleOrder
 import com.switchsolutions.farmtohome.bdo.interfaces.PlayBeep
 import com.switchsolutions.farmtohome.bdo.responsemodels.DispatchedOrdersData
 import com.switchsolutions.farmtohome.bdo.viewmodels.DispatchViewModel
@@ -48,6 +51,9 @@ class DispatchedItemAdapter(private var viewModel: DispatchViewModel,
         holder.tvDeliveryDate.text = listdata[position].delivery_date
         holder.tvRequestId.text = listdata[position].id.toString()
         holder.relativeLayout.setOnClickListener { view ->
+            MainActivity.requestID = listdata[position].id!!
+            singleOrder.showOrderDetails(listdata[position].id!!)
+            singleOrder.startObserverForSingleOrder()
 //            Toast.makeText(
 //                view.context,
 //                "View Order " + myListData.description +"  "+position,

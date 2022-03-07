@@ -43,7 +43,7 @@ class CartFragment : Fragment() {
         var item: ArrayList<String>? = ArrayList()
         val placeOrderJson = JsonObject()
         fun newInstance() = CartFragment()
-         var productQuantity: ArrayList<String> = ArrayList()
+        var productQuantity: ArrayList<String> = ArrayList()
     }
     private lateinit var cartViewModel: CartViewModel
     private lateinit var adapter: MyCartRecyclerViewAdapter
@@ -62,6 +62,7 @@ class CartFragment : Fragment() {
     private val MY_PREFS_NAME = "FarmToHomeBDO"
     var customerName: String = ""
     var deliveryDate: String = ""
+    var quantityCheck: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,7 +79,6 @@ class CartFragment : Fragment() {
         binding = CreateCartFragmentBinding.inflate(layoutInflater)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         submitViewModel = ViewModelProvider(this).get(SubmitCartViewModel::class.java)
@@ -95,9 +95,25 @@ class CartFragment : Fragment() {
             }
         })
         binding.btnSubmitCart.setOnClickListener {
+            if (productQuantity.isNotEmpty()){
+                for ((index) in productQuantity.withIndex()){
+                    if (productQuantity[index].toInt() == 0) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Quantity cannot be less than 1",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        quantityCheck = false
+                        break
+                    }
+                    else
+                    {
+                        quantityCheck = true
+                    }
+                }
+            }
             if (cartDataListCheck.isNotEmpty()) {
                 val productsArray = JsonArray()
-
 //                placeOrderJson.addProperty("customer_id", 9241)
 //                placeOrderJson.addProperty("delivery_date", "2022-03-12")
 //                placeOrderJson.addProperty("city_id", 1)
@@ -110,10 +126,11 @@ class CartFragment : Fragment() {
 //                productsArray.add(productObject)
 //                placeOrderJson.add("products", productsArray)
 //                CreateBdoRequestService(requireContext(), placeOrderJson )
-                if (cartDataList.isNotEmpty()) {
+                if (cartDataList.isNotEmpty() && quantityCheck) {
                     placeOrderJson.addProperty("customer_id", customerId)
                     placeOrderJson.addProperty("delivery_date", deliveryDate)
                     placeOrderJson.addProperty("city_id", cityId)
+                    placeOrderJson.addProperty("comments", binding.etCustomerRemarks.text.toString())
                     for ((index) in cartDataList.withIndex()) {
                         product = cartDataList[index]
                         val productObject = JsonObject()
@@ -173,13 +190,14 @@ class CartFragment : Fragment() {
 //                    Toast.LENGTH_LONG
 //                ).show()
                 if (waitDialog.isShowing) waitDialog.dismiss()
-                NotificationUtil.showShortToast(context!!, context!!.getString(R.string.error_occurred), Type.DANGER)
+                //NotificationUtil.showShortToast(context!!, context!!.getString(R.string.error_occurred)+ it.message, Type.DANGER)
             }
         })
     }
     private fun clearCartAfterSubmission() {
         binding.btnSubmitCart.visibility = View.GONE
         binding.cvCartCustomerDetails.visibility = View.GONE
+        binding.llCustomerRemarks.visibility = View.GONE
         val editor = requireContext().getSharedPreferences(MY_PREFS_NAME, AppCompatActivity.MODE_PRIVATE).edit()
         editor.putInt("badgeCount", 0)
         editor.putInt("customerId", 0) //0 is the default value.
@@ -261,11 +279,13 @@ class CartFragment : Fragment() {
                 cartDataList = it
                 binding.btnSubmitCart.visibility = View.VISIBLE
                 binding.cvCartCustomerDetails.visibility = View.VISIBLE
+                binding.llCustomerRemarks.visibility = View.VISIBLE
                 adapter.setList(it)
                 adapter.notifyDataSetChanged()
             } else if (customerName.isNotEmpty() && customerId != 0) {
                 binding.btnSubmitCart.visibility = View.VISIBLE
                 binding.cvCartCustomerDetails.visibility = View.VISIBLE
+                binding.llCustomerRemarks.visibility = View.VISIBLE
                 adapter.setList(it)
                 adapter.notifyDataSetChanged()
             }
@@ -273,6 +293,7 @@ class CartFragment : Fragment() {
                 clearCartAfterSubmission()
                 binding.btnSubmitCart.visibility = View.GONE
                 binding.cvCartCustomerDetails.visibility = View.GONE
+                binding.llCustomerRemarks.visibility = View.GONE
             }
         })
     }

@@ -31,7 +31,6 @@ class LoginActivity : AppCompatActivity(),
     private val MY_PREFS_NAME = "FarmToHomeBDO"
     private lateinit var branchViewmodel: BranchViewModel
 
-
     companion object {
         const val SIGNIN_FRAGMENT_TAG: String = "signInFrag"
     }
@@ -141,7 +140,7 @@ class LoginActivity : AppCompatActivity(),
 //                    this, "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                NotificationUtil.showShortToast(this, this.getString(R.string.error_occurred), Type.DANGER)
+                //NotificationUtil.showShortToast(this, this.getString(R.string.error_occurred) + it.message, Type.DANGER)
             }
         })
     }
@@ -174,7 +173,7 @@ class LoginActivity : AppCompatActivity(),
 
     private fun setPasswordError() {
         // NotificationUtil.showShortToast(context!!, getString(R.string.password_error), Type.DANGER)
-//        binding.tilUserPassword.error = getString(R.string.password_error)
+        binding.etPassword.error = "invalid Password"
 //        binding.tilUserPassword.isErrorEnabled = true
     }
 

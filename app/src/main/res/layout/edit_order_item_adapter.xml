@@ -94,12 +94,12 @@
                         android:id="@+id/view_divider"
                         android:layout_width="3dp"
                         android:layout_height="30dp"
-                        android:layout_marginStart="64dp"
+                        android:layout_marginStart="48dp"
                         android:background="@color/gray"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/product_unit_and_quantity_cart"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.523" />
+                        app:layout_constraintVertical_bias="0.487" />
 
                     <TextView
                         android:id="@+id/product_unit_and_quantity_cart2"
@@ -138,7 +138,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:layout_marginStart="64dp"
+                        android:layout_marginStart="56dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/rounded_primary_background"
                         android:padding="8dp"

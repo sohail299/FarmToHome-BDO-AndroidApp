@@ -81,10 +81,6 @@
 </LinearLayout>
         </LinearLayout>
         </androidx.cardview.widget.CardView>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="450dp"
-            android:layout_marginBottom="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cart_recycler_view"
@@ -93,6 +89,46 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="20dp" />
+
+        <LinearLayout
+            android:id="@+id/ll_customer_remarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remarks"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginStart="15dp"/>
+
+
+            <EditText
+                android:id="@+id/et_customer_remarks"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="15dp"
+                android:padding="5dp"
+                android:inputType="text|textMultiLine|textCapSentences"
+                android:gravity="top"
+                android:maxLength="500"
+                android:layout_marginEnd="15dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:ems="10"
+                android:textSize="14sp"
+                android:maxLines="8"
+                android:singleLine="true"
+                android:fontFamily="@font/montserrat"
+                android:background="@drawable/remarks_background_edit_text"
+                android:layout_marginBottom="20dp"
+                android:hint="Max 500 characters"/>
+
         </LinearLayout>
 
         <mehdi.sakout.fancybuttons.FancyButton

@@ -124,7 +124,8 @@ class DeliveredFragment : Fragment() {
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                NotificationUtil.showShortToast(requireContext(), requireContext().getString(R.string.error_occurred), Type.DANGER)            }
+                //NotificationUtil.showShortToast(requireContext(), requireContext().getString(R.string.error_occurred), Type.DANGER)
+            }
         })
 
     }

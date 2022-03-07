@@ -21,6 +21,7 @@ import com.switchsolutions.farmtohome.bdo.databinding.CustomEditProductDialogBin
 import com.switchsolutions.farmtohome.bdo.databinding.DashboardFragmenttFragmentBinding
 import com.switchsolutions.farmtohome.bdo.databinding.DispatchedFragmentBinding
 import com.switchsolutions.farmtohome.bdo.enums.Type
+import com.switchsolutions.farmtohome.bdo.interfaces.ShowOrderDetail
 import com.switchsolutions.farmtohome.bdo.responsemodels.DashBoardOrdersData
 import com.switchsolutions.farmtohome.bdo.responsemodels.DashboardResponseData
 import com.switchsolutions.farmtohome.bdo.responsemodels.DispatchedOrdersData
@@ -39,6 +40,7 @@ class DispatchFragment : Fragment() {
         val dispatchedOrdersJson = JsonObject()
         var USER_ID = 1
         fun newInstance() = DispatchFragment()
+        lateinit var singleOrder : ShowOrderDetail
     }
 
     private lateinit var viewModel: DispatchViewModel
@@ -65,6 +67,7 @@ class DispatchFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(DispatchViewModel::class.java)
         waitDialog = ProgressDialog(requireContext())
+        singleOrder = activity as ShowOrderDetail
         dispatchedOrdersJson.addProperty("city_id", USER_STORED_CITY_ID)
         dispatchedOrdersJson.addProperty("status", 3)
         dispatchedOrdersJson.addProperty("created_by", USER_ID)
@@ -111,7 +114,7 @@ class DispatchFragment : Fragment() {
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                NotificationUtil.showShortToast(requireContext(), requireContext().getString(R.string.error_occurred), Type.DANGER)
+                //NotificationUtil.showShortToast(requireContext(), requireContext().getString(R.string.error_occurred), Type.DANGER)
             }
         })
 

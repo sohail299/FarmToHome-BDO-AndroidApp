@@ -67,8 +67,10 @@ class OrderEditAdapter(private var viewModel: DashboardFragmentViewModel,
             editQuantity.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     if (editQuantity.text.toString().isNotEmpty()) {
-                        DashboardFragment.productQuantity[position] = s.toString().toInt()
-                        item.quantity = s.toString().toIntOrNull()
+                        if (DashboardFragment.productQuantity.size > position) {
+                            DashboardFragment.productQuantity[position] = s.toString().toInt()
+                            item.quantity = s.toString().toIntOrNull()
+                        }
                     }
                 }
 
@@ -76,8 +78,10 @@ class OrderEditAdapter(private var viewModel: DashboardFragmentViewModel,
                 }
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (editQuantity.text.toString().isNotEmpty()) {
-                        DashboardFragment.productQuantity[position] = s.toString().toInt()
-                        item.quantity = s.toString().toIntOrNull()
+                        if (DashboardFragment.productQuantity.size > position) {
+                            DashboardFragment.productQuantity[position] = s.toString().toInt()
+                            item.quantity = s.toString().toIntOrNull()
+                        }
                     }
                 }
             }
@@ -85,6 +89,7 @@ class OrderEditAdapter(private var viewModel: DashboardFragmentViewModel,
             addBtn.setOnClickListener {
                 quantity = item.quantity!!.plus(1)
                 item.quantity = item.quantity!!.plus(1)
+                if (DashboardFragment.productQuantity.size > position)
                 DashboardFragment.productQuantity[position] = quantity
                 editQuantity.setText(quantity.toString())
 
@@ -93,16 +98,18 @@ class OrderEditAdapter(private var viewModel: DashboardFragmentViewModel,
                 if (item.quantity!! > 1) {
                     quantity = item.quantity!!.minus(1)
                     item.quantity = item.quantity!!.minus(1)
+                    if (DashboardFragment.productQuantity.size > position)
                     DashboardFragment.productQuantity[position] = quantity
                     editQuantity.setText(quantity.toString())
 
                 }
             }
-
             removeItemBtn.setOnClickListener {
+                if (DashboardFragment.editOrders.size > position) {
                     DashboardFragment.editOrders.removeAt(position)
                     DashboardFragment.adapter.notifyItemRemoved(position)
                     DashboardFragment.adapter.notifyDataSetChanged()
+                }
 
 
             }

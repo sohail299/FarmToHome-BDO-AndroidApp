@@ -91,7 +91,7 @@ dependencies {
 
 
     //lottie animation
-    implementation'com.airbnb.android:lottie:3.4.0'
+    implementation 'com.airbnb.android:lottie:3.4.0'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

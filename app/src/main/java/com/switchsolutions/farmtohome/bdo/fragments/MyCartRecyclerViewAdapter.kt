@@ -32,35 +32,39 @@ class MyCartRecyclerViewAdapter( private val clickListener: (CartEntityClass) ->
 
     fun setList(subscribers: List<CartEntityClass>) {
         subscribersList.clear()
+        CartFragment.productQuantity.clear()
         subscribersList.addAll(subscribers)
     }
 }
 class MyViewHolder( val binding: CartItemListAdapterBinding, var quantity: Int) : RecyclerView.ViewHolder(binding.root) {
+
     fun bind(product: CartEntityClass, position: Int, clickListener: (CartEntityClass) -> Unit) {
         binding.productNameCart.text = product.productName
+        CartFragment.productQuantity.add(product.quantity)
         binding.totalQtyCart.setText(product.quantity)
         binding.tvCustomerName.text = product.customerName
         binding.productUnitAndQuantityCart2.text = product.productUnit
-        CartFragment.productQuantity.add(product.quantity)
+
         binding.deleteProductImageCart.setOnClickListener {
             clickListener(product)
         }
         binding.totalQtyCart.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (binding.totalQtyCart.text.toString().isNotEmpty())
-                product.quantity = s.toString()
+                if (binding.totalQtyCart.text.toString().isNotEmpty()) {
+                    CartFragment.productQuantity[position] = s.toString()
+                    product.quantity = s.toString()
+                }
             }
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (binding.totalQtyCart.text.toString().isNotEmpty())
+                if (binding.totalQtyCart.text.toString().isNotEmpty()) {
+                    CartFragment.productQuantity[position] = s.toString()
                     product.quantity = s.toString()
-            }
-        }
 
-        )
+                }
+            }
+        })
         binding.productQtyAddCart.setOnClickListener {
                 quantity = product.quantity.toIntOrNull()?.plus(1)!!
                 product.quantity = product.quantity.toIntOrNull()?.plus(1).toString()

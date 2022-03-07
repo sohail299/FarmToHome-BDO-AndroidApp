@@ -311,11 +311,7 @@ class CreateRequestFragment : Fragment() {
 
     private fun getCartItems() {
         cartVM.getSavedProducts().observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()) {
-                cartDataList= it
-            }
-            else
-                cartDataList = ArrayList()
+            cartDataList = it.ifEmpty { ArrayList() }
         })
     }
     fun datePick() {

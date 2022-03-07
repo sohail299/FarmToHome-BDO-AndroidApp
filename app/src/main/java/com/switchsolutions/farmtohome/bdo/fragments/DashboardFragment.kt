@@ -7,7 +7,6 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Context.LAYOUT_INFLATER_SERVICE
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -30,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import com.switchsolutions.farmtohome.bdo.LoginActivity
 import com.switchsolutions.farmtohome.bdo.MainActivity
 import com.switchsolutions.farmtohome.bdo.MainActivity.Companion.waitDilogFlag
 import com.switchsolutions.farmtohome.bdo.NotificationUtil
@@ -71,7 +69,6 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         @SuppressLint("StaticFieldLeak")
         lateinit var adapter: OrderEditAdapter
     }
-
     private lateinit var viewModel: DashboardFragmentViewModel
     private lateinit var viewModelEdit: EditOrderViewModel
     private lateinit var viewModelEditOrders: GetOrdersToEditViewModel
@@ -81,14 +78,14 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
     private lateinit var editOrderDialog: Dialog
     lateinit var delivDate: TextView
     lateinit var etProducts: AutoCompleteTextView
-    lateinit var etProductsQuantit: EditText
-
+    lateinit var etProductsQuantity: EditText
     private lateinit var orders: ArrayList<DashBoardOrdersData>
     private lateinit var waitDialog: ProgressDialog
     private val MY_PREFS_NAME = "FarmToHomeBDO"
     var productId: Int = 0
     var productName: String = ""
     var productUnit: String = ""
+    var quantityCheck: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -203,11 +200,11 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                NotificationUtil.showShortToast(
-                    requireContext(),
-                    requireContext().getString(R.string.error_occurred),
-                    Type.DANGER
-                )
+//                NotificationUtil.showShortToast(
+//                    requireContext(),
+//                    requireContext().getString(R.string.error_occurred)+it.message,
+//                    Type.DANGER
+//                )
             }
         })
     }
@@ -247,11 +244,11 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                NotificationUtil.showShortToast(
-                    requireContext(),
-                    requireContext().getString(R.string.error_occurred),
-                    Type.DANGER
-                )
+//                NotificationUtil.showShortToast(
+//                    requireContext(),
+//                    requireContext().getString(R.string.error_occurred)+it.message,
+//                    Type.DANGER
+//                )
             }
         })
 
@@ -362,7 +359,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         etProducts = dialogLayout.findViewById(R.id.et_select_product_edit)
         val textProductsQuantity: TextView =
             dialogLayout.findViewById(R.id.tv_product_quantity_edit)
-        etProductsQuantit =
+        etProductsQuantity =
             dialogLayout.findViewById(R.id.et_select_product_quantity_edit)
         adapter = OrderEditAdapter(viewModel, products, count, View.OnClickListener { item ->
             refreshAdapter()
@@ -433,11 +430,11 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
             if (editOrders.size >= 1)
             updateOrder(products, data)
             else
-                Toast.makeText(requireContext(), "At least one item should be in the order.", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "At least one item should be in the order, Please Add product first.", Toast.LENGTH_LONG).show()
         }
 
         btnAddProduct.setOnClickListener {
-            updateOrderLocally()
+            updateOrderLocally(products)
         }
         btnCloseDialog.setOnClickListener {
             if (editOrders != editOrdersTemp) {
@@ -468,19 +465,48 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         }
     }
 
-    private fun updateOrderLocally() {
-        if (etProducts.text.isNotEmpty() && etProductsQuantit.text.isNotEmpty()) {
-            product_counter.add(product_counter.size+1)
-            val editOrderProducts = OrderProductsData()
-            editOrderProducts.label = etProducts.text.toString()
-            editOrderProducts.value = productId
-            editOrderProducts.unit = productUnit
-            editOrderProducts.quantity = etProductsQuantit.text.toString().toIntOrNull()
-            editOrderProducts.is_removed= "0"
-            etProducts.setText("")
-            etProductsQuantit.setText("")
-            editOrders.add(editOrderProducts)
-            adapter.notifyDataSetChanged()
+    private fun updateOrderLocally(products: ArrayList<OrderProductsData>) {
+        var sameProduct= false
+        if (etProducts.text.isNotEmpty() && etProductsQuantity.text.isNotEmpty()) {
+            if (products.isNotEmpty()) {
+                for ((index) in products.withIndex()) {
+                    if (products[index].value == productId) {
+                    products[index].quantity =
+                        products[index].quantity?.plus(etProductsQuantity.text.toString().toInt())
+                    etProducts.setText("")
+                    etProductsQuantity.setText("")
+                        adapter.notifyDataSetChanged()
+                        sameProduct = true
+                        break
+                }
+                }
+                if (!sameProduct) {
+                    product_counter.add(product_counter.size + 1)
+                    val editOrderProducts = OrderProductsData()
+                    editOrderProducts.label = etProducts.text.toString()
+                    editOrderProducts.value = productId
+                    editOrderProducts.unit = productUnit
+                    editOrderProducts.quantity = etProductsQuantity.text.toString().toIntOrNull()
+                    editOrderProducts.is_removed = "0"
+                    etProducts.setText("")
+                    etProductsQuantity.setText("")
+                    editOrders.add(editOrderProducts)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+            else{
+                product_counter.add(product_counter.size + 1)
+                val editOrderProducts = OrderProductsData()
+                editOrderProducts.label = etProducts.text.toString()
+                editOrderProducts.value = productId
+                editOrderProducts.unit = productUnit
+                editOrderProducts.quantity = etProductsQuantity.text.toString().toIntOrNull()
+                editOrderProducts.is_removed = "0"
+                etProducts.setText("")
+                etProductsQuantity.setText("")
+                editOrders.add(editOrderProducts)
+                adapter.notifyDataSetChanged()
+            }
         }
         else{
             Toast.makeText(requireContext(), "Please Choose Product", Toast.LENGTH_SHORT).show()
@@ -488,34 +514,55 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
     }
 
     private fun updateOrder(products: ArrayList<OrderProductsData>, data: EditOrdersData) {
-        val productsArray = JsonArray()
-        dialoClicked = false
-        val editOrderObject = JsonObject()
-        editOrderObject.addProperty("customer_id", data.customer_id)
-        editOrderObject.addProperty("delivery_date", delivDate.text.toString())
-        editOrderObject.addProperty("request_id", data.id)
-        editOrderObject.addProperty("city_id", USER_STORED_CITY_ID)
-        if (products.size > 0){
-            for ((index) in products.withIndex()) {
+        if (productQuantity.isNotEmpty()){
+            for ((index) in productQuantity.withIndex()){
+                if (productQuantity[index] == 0) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Quantity cannot be less than 1",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    quantityCheck = false
+                    break
+                }
+                else
+                {
+                    quantityCheck = true
+                }
+            }
+        }
+        if (etProducts.text.isEmpty() && etProductsQuantity.text.isEmpty() && quantityCheck) {
+            val productsArray = JsonArray()
+            dialoClicked = false
+            val editOrderObject = JsonObject()
+            editOrderObject.addProperty("customer_id", data.customer_id)
+            editOrderObject.addProperty("delivery_date", delivDate.text.toString())
+            editOrderObject.addProperty("request_id", data.id)
+            editOrderObject.addProperty("city_id", USER_STORED_CITY_ID)
+            if (products.size > 0) {
+                for ((index) in products.withIndex()) {
+                    val editOrderProducts = JsonObject()
+                    editOrderProducts.addProperty("value", products[index].value)
+                    editOrderProducts.addProperty("quantity", products[index].quantity)
+                    editOrderProducts.addProperty("is_removed", 0)
+                    productsArray.add(editOrderProducts)
+                }
+            }
+            if (etProducts.text.isNotEmpty() && etProductsQuantity.text.isNotEmpty()) {
                 val editOrderProducts = JsonObject()
-                editOrderProducts.addProperty("value", products[index].value)
-                editOrderProducts.addProperty("quantity", products[index].quantity)
+                editOrderProducts.addProperty("value", productId)
+                editOrderProducts.addProperty("quantity", etProductsQuantity.text.toString())
                 editOrderProducts.addProperty("is_removed", 0)
+                etProducts.setText("")
+                etProductsQuantity.setText("")
                 productsArray.add(editOrderProducts)
             }
-    }
-        if (etProducts.text.isNotEmpty() && etProductsQuantit.text.isNotEmpty()) {
-            val editOrderProducts = JsonObject()
-            editOrderProducts.addProperty("value", productId)
-            editOrderProducts.addProperty("quantity", etProductsQuantit.text.toString())
-            editOrderProducts.addProperty("is_removed", 0)
-            etProducts.setText("")
-            etProductsQuantit.setText("")
-            productsArray.add(editOrderProducts)
+            editOrderObject.add("products", productsArray)
+            startEditObserver()
+            viewModelEdit.startObserver(editOrderObject)
         }
-        editOrderObject.add("products", productsArray)
-        startEditObserver()
-        viewModelEdit.startObserver(editOrderObject)
+        else
+            Toast.makeText(requireContext(), "Please add product first", Toast.LENGTH_SHORT).show()
     }
 
     fun refreshAdapter() {
@@ -570,11 +617,11 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                NotificationUtil.showShortToast(
-                    context!!,
-                    context!!.getString(R.string.error_occurred),
-                    Type.DANGER
-                )
+//                NotificationUtil.showShortToast(
+//                    context!!,
+//                    context!!.getString(R.string.error_occurred)+it.message,
+//                    Type.DANGER
+//                )
             }
         })
     }

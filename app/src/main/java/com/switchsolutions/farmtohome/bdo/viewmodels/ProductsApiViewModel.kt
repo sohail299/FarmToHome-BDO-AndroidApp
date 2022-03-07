@@ -28,6 +28,7 @@ class ProductsApiViewModel : ViewModel() {
     fun startObserver(cityId: Int) {
         callProductsInApi.value = true
         //call api here
+
         object : RetrofitApiManager<ProductsResponseModel>(AppController.ApplicationContext) {
             init {
                 callServer(RestApiClient.getClient(addHeaders = true).getProductsDetail(cityId = cityId))

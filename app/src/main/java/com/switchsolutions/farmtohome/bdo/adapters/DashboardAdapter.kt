@@ -54,7 +54,6 @@ class DashboardAdapter(private val context: Context, private var viewModel: Dash
         val listItem: View = layoutInflater.inflate(R.layout.dashboard_list_items, parent, false)
         return ViewHolder(listItem)
     }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = listdata[position]
         holder.ivEditOrder.setOnClickListener { listener(item) }

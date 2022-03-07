@@ -18,6 +18,7 @@
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/drawable/ic_store_white_24dp.xml" value="0.2585" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/drawable/nav_icons_color.xml" value="0.165" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/drawable/password.xml" value="0.1025" />
+        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/drawable/remarks_background_edit_text.xml" value="0.169" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/drawable/roundbutton.xml" value="0.187" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/drawable/rounded_alert_dialog.xml" value="0.2595" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/drawable/rounded_edittext_bg.xml" value="0.124" />
@@ -25,12 +26,13 @@
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/drawable/subtract_product_qty_icon.xml" value="0.229" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/drawable/tab_selector_bg.xml" value="0.141" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/font/roboto.xml" value="0.284375" />
-        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout-v28/create_request_fragment.xml" value="0.10833333333333334" />
+        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout-v28/create_request_fragment.xml" value="0.264" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout-v28/dashboard_list_items.xml" value="0.536" />
+        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout-v28/edit_text_back_ground_with_border.xml" value="0.14114583333333333" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/activity_edit.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/activity_main.xml" value="0.26104417670682734" />
+        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/activity_main.xml" value="0.152" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/activity_signin.xml" value="0.264" />
-        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/add_customer_fragment.xml" value="0.264" />
+        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/add_customer_fragment.xml" value="0.22105263157894736" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/add_product_adapter.xml" value="0.2" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/cart_fragment.xml" value="0.225" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/cart_item_list_adapter.xml" value="0.264" />
@@ -38,7 +40,7 @@
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/choose_product_fragment.xml" value="0.264" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/content_custom_toast.xml" value="0.14427083333333332" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/create_cart_fragment.xml" value="0.2" />
-        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/create_request_fragment.xml" value="0.4" />
+        <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/create_request_fragment.xml" value="0.264" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/custom_edit_product_dialog.xml" value="0.264" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/custom_location_selection_dialog.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/BKK/AndroidStudioProjects/BDOF2H/app/src/main/res/layout/custom_single_product_dialog.xml" value="0.21800947867298578" />
