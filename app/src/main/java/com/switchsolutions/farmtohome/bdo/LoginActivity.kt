@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         // Inflate the layout for this fragment
         binding = ActivitySigninBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this).get(SignInViewModel::class.java)
+        viewModel = ViewModelProvider(this)[SignInViewModel::class.java]
         setContentView(binding.root)
         val preferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
         var name = preferences.getInt("User", 0)

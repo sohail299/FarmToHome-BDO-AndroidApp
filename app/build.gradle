@@ -84,7 +84,7 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
     //Fancy Button
-    implementation 'com.github.medyo:fancybuttons:1.8.4'
+    implementation 'com.github.medyo:fancybuttons:1.9.0'
 
     //Shimmer Recyclerview
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
@@ -117,6 +117,9 @@ dependencies {
 
     //material bottom navigation
     implementation 'com.google.android.material:material:1.6.0-alpha02'
+
+    //multi selection drop down
+    implementation "com.hootsuite.android:nachos:1.1.1"
 
 
     // ViewModel

@@ -5,8 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="myCartVM"
-            type="com.switchsolutions.farmtohome.bdo.CartViewModel" />
+            name="addCustomerRequestModel"
+            type="com.switchsolutions.farmtohome.bdo.AddCustomerRequestModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,6 +37,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:paddingStart="5dp"
+                android:text="@{addCustomerRequestModel.name}"
                 android:ems="10"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -75,7 +76,8 @@
                 android:layout_margin="10dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
-                android:paddingStart="5dp"
+                android:paddingStart="10dp"
+                android:text="@={addCustomerRequestModel.phone}"
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/rounded_edittext_bg"
                 android:ems="10"
@@ -99,16 +101,33 @@
                 android:layout_height="35dp"
                 android:ems="10"
                 android:maxLines="3"
-                android:maxLength="4"
                 android:layout_marginEnd="15dp"
                 android:layout_marginStart="15dp"
                 android:paddingStart="10dp"
+                android:text="@={addCustomerRequestModel.address}"
                 android:paddingEnd="5dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/rounded_edittext_bg"
                 android:hint="Enter Address"
                 android:inputType="textPostalAddress"/>
-
+            <TextView
+                android:id="@+id/tv_customer_branch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Branch"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/montserrat"
+                android:layout_marginStart="15dp"/>
+            <Spinner
+                android:id="@+id/sp_branch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"
+                android:layout_marginTop="8dp"/>
             <TextView
                 android:id="@+id/tv_customer_sectors"
                 android:layout_width="match_parent"
@@ -119,6 +138,7 @@
                 android:fontFamily="@font/montserrat"
                 android:layout_marginStart="15dp"/>
             <Spinner
+                android:id="@+id/sp_sectors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
@@ -142,7 +162,7 @@
                 android:layout_height="35dp"
                 android:ems="10"
                 android:maxLines="3"
-                android:maxLength="4"
+                android:text="@={addCustomerRequestModel.email}"
                 android:layout_marginEnd="15dp"
                 android:layout_marginStart="15dp"
                 android:paddingStart="10dp"
@@ -167,11 +187,11 @@
                 android:layout_height="35dp"
                 android:ems="10"
                 android:maxLines="3"
-                android:maxLength="4"
                 android:layout_marginEnd="15dp"
                 android:layout_marginStart="15dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="5dp"
+                android:text="@={addCustomerRequestModel.password}"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/rounded_edittext_bg"
                 android:hint="Enter Password"
@@ -187,10 +207,19 @@
                 android:fontFamily="@font/montserrat"
                 android:layout_marginStart="15dp"/>
 
+            <com.hootsuite.nachos.NachoTextView
+                android:id="@+id/nacho_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@drawable/rounded_edittext_bg"
+                android:hint="Enter Products"/>
+
         </LinearLayout>
 
         <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/btn_add_to_cart"
+            android:id="@+id/btn_add_customer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

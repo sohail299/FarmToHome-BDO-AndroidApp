@@ -5,6 +5,7 @@ import com.google.gson.JsonObject
 import com.switchsolutions.farmtohome.bdo.requestmodels.CreateBdoRequestModel
 import com.switchsolutions.farmtohome.bdo.responsemodels.*
 import com.switchsolutions.farmtohome.bdo.responsemodels.pojo.LoginResponseModel
+import com.switchsolutions.farmtohome.bdo.responsemodels.sectorsresponse.SectorsResponseModel
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
@@ -39,11 +40,17 @@ interface ApiCommService {
      @GET("names/products/cityproductswithunits")
         fun getProductsDetail(@Query("cityId") cityId : Int) : Call<ProductsResponseModel>
 
+        @GET("names/delivery-location")
+        fun getSectors(@Query("city_id") cityId : Int) : Call<SectorsResponseModel>
+
         @GET("bdorequestsremove")
         fun removeRequest(@Query("requisition_id") requisition_id : Int) : Call<RequisitionResponseModel>
 
         @POST("posbdorequestsstatus")
         fun getDispatchedOrders(@Body request : JsonObject) : Call<DispatchedOrdersResponseModel>
+
+        @POST("bdocreatecustomer")
+        fun addCustomer(@Body request : JsonObject) : Call<AddCustomerResponseModel>
 
         @POST("bdostatusupdate")
         fun markAsDelivered(@Body request : JsonObject) : Call<DeliveryStatusResponseModel>

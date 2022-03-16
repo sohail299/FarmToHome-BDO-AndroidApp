@@ -29,6 +29,11 @@
             android:name=".MainActivity"
             android:theme="@style/Theme.BDOF2H.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".fragments.AddCustomerActivity"
+            android:theme="@style/Theme.BDOF2H.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

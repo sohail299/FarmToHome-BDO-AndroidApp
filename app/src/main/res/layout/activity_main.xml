@@ -34,12 +34,12 @@
         app:popupTheme="@style/Theme.BDOF2H.PopupOverlay">
 
         <ImageView
-            android:id="@+id/iv_btn_logout"
+            android:id="@+id/iv_btn_settings"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="10dp"
             android:layout_gravity="end"
-            android:src="@drawable/logout"/>
+            android:src="@drawable/settings"/>
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_toolbar_location"
             android:layout_width="wrap_content"

@@ -44,7 +44,6 @@ class CreateRequestFragment : Fragment() {
         lateinit var binding : CreateRequestFragmentBinding
         lateinit var cartDataList: List<CartEntityClass>
        //  var customerNamesData: ArrayList<String> = ArrayList()
-
     }
 
     private lateinit var viewModel: CreateRequestViewModel

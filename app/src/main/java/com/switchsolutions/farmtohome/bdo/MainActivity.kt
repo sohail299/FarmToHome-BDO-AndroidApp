@@ -104,9 +104,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
                 showLocationSelectionBox()
             }
 
-            binding.ivBtnLogout.setOnClickListener {
+            binding.ivBtnSettings.setOnClickListener {
                 // change toolbar title
-                userLogout()
+
+                openSettingDialog()
             }
         }
         supportActionBar?.apply {
@@ -207,18 +208,42 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
 //        }
         getCustomerNames()
         getProductsNames()
+    }
 
+    private fun openSettingDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        val inflater: LayoutInflater =
+            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val dialogLayout: View = inflater.inflate(R.layout.layout_settings, null)
+        val myCardView: CardView = dialogLayout.findViewById(R.id.dialog_settings)
+        val btnAddCustomer: Button = dialogLayout.findViewById(R.id.btn_add_customer)
+        val btnLogout: Button = dialogLayout.findViewById(R.id.btn_logout)
 
+        // linearLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent))
+        //  linearLayout.setBackgroundResource(Color.TRANSPARENT)
+        myCardView.setCardBackgroundColor(Color.TRANSPARENT)
+        myCardView.cardElevation = 0f
+        builder.setView(dialogLayout)
+        builder.setCancelable(true)
+        val settingDialog: Dialog = builder.create()
+        settingDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        settingDialog.show()
+
+        btnAddCustomer.setOnClickListener {
+            val i =Intent(this@MainActivity, AddCustomerActivity::class.java) //TODO Replace with Logout function
+            startActivity(i)
+            settingDialog.dismiss()
+        }
+        btnLogout.setOnClickListener {
+            settingDialog.dismiss()
+            userLogout()
+        }
     }
 
     private fun userLogout() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(this.getString(R.string.confirm_logout))
             .setPositiveButton(this.getString(R.string.logout)) { dialog, _ ->
-                // MY_PREFS_NAME - a static String variable like:
-//public static final String MY_PREFS_NAME = "MyPrefsFile";
-                // MY_PREFS_NAME - a static String variable like:
-//public static final String MY_PREFS_NAME = "MyPrefsFile";
                 val editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit()
                 editor.putInt("User", 0)
                 editor.putBoolean("isLoggedIn", false)
@@ -229,12 +254,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
                 startActivity(intent)
                 finish()
                 dialog.dismiss()
-                // logout user
-                //delete feedback
             }
             .setNegativeButton(this.getString(R.string.cancel)) { dialog, _ ->
                 // cancel delete process
-                dialog.dismiss()
+               dialog.dismiss()
             }
         builder.show()
     }
