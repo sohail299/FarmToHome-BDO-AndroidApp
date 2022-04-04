@@ -29,7 +29,6 @@ abstract class RetrofitApiManager<T>(context: Context) : Callback<T>, IOnTokenRe
             responseFailure(ErrorDto(mContext.getString(R.string.no_internet), 0))
         }
     }
-
     override fun onResponse(call: Call<T>?, response: Response<T>?) {
         //check for null response
         if (response?.isSuccessful!! && response.body() != null) {

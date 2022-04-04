@@ -233,6 +233,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
             val i =Intent(this@MainActivity, AddCustomerActivity::class.java) //TODO Replace with Logout function
             startActivity(i)
             settingDialog.dismiss()
+            finish()
         }
         btnLogout.setOnClickListener {
             settingDialog.dismiss()
@@ -525,15 +526,24 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
             //showEditOrderDialog()
         })
         productsApiViewModel.apiResponseFailure.observe(this, Observer {
-            if ((it?.statusCode == HttpStatusCodes.SC_UNAUTHORIZED) || (it?.statusCode == HttpStatusCodes.SC_NO_CONTENT)) {
-                NotificationUtil.showShortToast(this, "UnAuthorized", Type.DANGER)
+            if ((it?.statusCode == HttpStatusCodes.SC_UNAUTHORIZED)) {
+                NotificationUtil.showShortToast(this, "Please Login again", Type.DANGER)
+                val editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit()
+                editor.putInt("User", 0)
+                editor.putBoolean("isLoggedIn", false)
+                editor.putString("accessToken", "")
+                editor.putInt("badgeCount", 0)
+                editor.apply()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
 //                val builder = AlertDialog.Builder(context!!)
 //                builder.setMessage(context?.getString(R.string.invalid_credentials))
 //                        .setPositiveButton(context?.getString(R.string.ok)) { dialog, _ ->
 //                            dialog.dismiss()
 //                        }
 //                builder.create().show()
-            } else {
+            } else if((it?.statusCode == HttpStatusCodes.SC_NO_CONTENT)){
 //                Toast.makeText(
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
@@ -543,6 +553,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
 //                    this.getString(R.string.error_occurred)+it.message,
 //                    Type.DANGER
 //                )
+            }
+            else{
+
             }
         })
 

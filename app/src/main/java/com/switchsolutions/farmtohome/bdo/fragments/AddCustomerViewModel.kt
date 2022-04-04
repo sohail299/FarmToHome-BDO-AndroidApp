@@ -28,6 +28,10 @@ class AddCustomerViewModel : ViewModel() {
     val statusSectorsSuccess: MutableLiveData<Event<SectorsResponseModel>>
         get() = apiSectorsSuccess
 
+    private val apiAddUserCall = MutableLiveData<Event<Boolean>>()
+    val statusAddUserCall: MutableLiveData<Event<Boolean>>
+        get() = apiAddUserCall
+
     private val apiAddCustomerSuccess = MutableLiveData<Event<AddCustomerResponseModel>>()
     val statusAddCustomerSuccess: MutableLiveData<Event<AddCustomerResponseModel>>
         get() = apiAddCustomerSuccess
@@ -35,6 +39,10 @@ class AddCustomerViewModel : ViewModel() {
     private val apiSectorsFailure = MutableLiveData<Event<ErrorDto>>()
     val statusSectorsFailure: MutableLiveData<Event<ErrorDto>>
         get() = apiSectorsFailure
+
+    private val apiAddCustomerFailure = MutableLiveData<Event<ErrorDto>>()
+    val statusAddCustomerFailure: MutableLiveData<Event<ErrorDto>>
+        get() = apiAddCustomerFailure
 
     init {
         addCustomerRequestModel.value = if (BuildConfig.DEBUG) AddCustomerRequestModel("", "","","","","",
@@ -51,7 +59,7 @@ class AddCustomerViewModel : ViewModel() {
     }
 
     fun addCustomerBtnClicked(addCustomerObj: JsonObject) {
-        callSignInApi.value = true
+        apiAddUserCall.value = Event(true)
         //call api here
         object : RetrofitApiManager<AddCustomerResponseModel>(AppController.ApplicationContext) {
 
@@ -59,14 +67,14 @@ class AddCustomerViewModel : ViewModel() {
                 callServer(RestApiClient.getClient(addHeaders = true).addCustomer(addCustomerObj))
             }
             override fun onSuccess(t: AddCustomerResponseModel?) {
-                callSignInApi.value = false
+                apiAddUserCall.value = Event(false)
                 //saving user details
                 apiAddCustomerSuccess.value = Event(t!!)
             }
             override fun onFailure(t: ErrorDto) {
                 Timber.e(t.message)
-                callSignInApi.value = false
-                apiResponseFailure.value = t
+                apiAddUserCall.value = Event(false)
+                apiAddCustomerFailure.value = Event(t)
             }
             override fun tokenRefreshed() {
                 //nothing required in this case
@@ -74,6 +82,7 @@ class AddCustomerViewModel : ViewModel() {
         }
     }
     fun getSectors(cityId: Int){
+
 
         object : RetrofitApiManager<SectorsResponseModel>(AppController.ApplicationContext) {
 

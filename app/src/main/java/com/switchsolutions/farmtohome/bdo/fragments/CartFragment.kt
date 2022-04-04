@@ -156,7 +156,7 @@ class CartFragment : Fragment() {
         submitViewModel.callCartSubmitApi.observe(viewLifecycleOwner, Observer {
             if (it!!) {
                 waitDialog = ProgressDialog.show(requireContext(), "", "Submitting")
-                waitDialog.setCancelable(true)
+                waitDialog.setCancelable(false)
             }
         })
         submitViewModel.apiResponseSuccess.observe(viewLifecycleOwner, Observer {

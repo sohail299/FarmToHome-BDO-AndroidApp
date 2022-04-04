@@ -15,6 +15,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -50,18 +51,17 @@ class DeliveredFragment : Fragment() {
         var USER_ID = 1
         fun newInstance() = DeliveredFragment()
         lateinit var singleOrder : ShowOrderDetail
+        lateinit var binding: DeliveredFragmentBinding
     }
 
     private lateinit var viewModel: DeliveredViewModel
-    lateinit var binding: DeliveredFragmentBinding
+
     private lateinit var dashboardResponseData: DeliveredResponseModel
     private lateinit var editData: DeliveredResponseData
     private lateinit var orders: ArrayList<DeliveredResponseData>
+    var orderDataCopy: ArrayList<DeliveredResponseData> = java.util.ArrayList()
     private lateinit var waitDialog: ProgressDialog
     private val MY_PREFS_NAME = "FarmToHomeBDO"
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,11 +78,14 @@ class DeliveredFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(DeliveredViewModel::class.java)
         waitDialog = ProgressDialog(requireContext())
+        binding.searchView.queryHint = "Search by customer name"
         singleOrder = activity as ShowOrderDetail
         deliveredOrdersJson.addProperty("city_id", USER_STORED_CITY_ID)
         deliveredOrdersJson.addProperty("status", 4)
         startObservers()
         viewModel.startObserver(deliveredOrdersJson)
+
+
         // TODO: Use the ViewModel
     }
 
@@ -98,12 +101,26 @@ class DeliveredFragment : Fragment() {
             orders = dashboardResponseData.data
 //            val adapter = DashboardAdapter(orders, View.OnClickListener(){
 //            })
-            val adapter = DeliveredItemsAdapter(viewModel, orders, View.OnClickListener {
+            orderDataCopy.addAll(dashboardResponseData.data)
+            val adapter = DeliveredItemsAdapter(viewModel, orders,orderDataCopy,  View.OnClickListener {
                 // showEditOrderDialog()
             })
             binding.recyclerViewDelivered.setHasFixedSize(true)
             binding.recyclerViewDelivered.layoutManager = LinearLayoutManager(requireContext())
             binding.recyclerViewDelivered.adapter = adapter
+
+            binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+                android.widget.SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    adapter.filter(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    adapter.filter(newText)
+                    return true
+                }
+            })
             //showEditOrderDialog()
         })
         viewModel.apiResponseFailure.observe(viewLifecycleOwner, Observer {

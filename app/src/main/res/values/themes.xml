@@ -14,7 +14,16 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-
+    <style name="ThemeOverlay.SearchView" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Text color -->
+        <item name="android:textViewStyle">@style/MontserratTextViewStyle</item>
+        <item name="android:editTextColor">@color/black</item>
+        <!-- Hint text color -->
+        <item name="android:textColorHint">@color/solid_gray</item>
+    </style>
+    <style name="MontserratTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
     <style name="Theme.BDOF2H.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

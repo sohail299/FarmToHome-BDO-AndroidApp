@@ -24,7 +24,7 @@ class RestApiClient {
             val okHttpClient = okHttpClientBuild.build()
 
             Retrofit.Builder()
-                .baseUrl("http://admintest.farmtohome.com.pk/api/")
+                .baseUrl("http://apt.farmtohome.com.pk/api/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -39,7 +39,7 @@ class RestApiClient {
             val okHttpClient = okHttpClientBuild.build()
 
             Retrofit.Builder()
-                    .baseUrl("http://admintest.farmtohome.com.pk/api/")    // live url = http://apt.farmtohome.com.pk/api/
+                    .baseUrl("http://apt.farmtohome.com.pk/api/")    // live url = http://apt.farmtohome.com.pk/api/
                     .client(okHttpClient)                                           // test url = http://admintest.farmtohome.com.pk/api/
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()

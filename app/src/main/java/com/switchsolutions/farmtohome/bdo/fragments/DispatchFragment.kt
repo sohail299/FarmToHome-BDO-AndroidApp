@@ -69,7 +69,7 @@ class DispatchFragment : Fragment() {
         waitDialog = ProgressDialog(requireContext())
         singleOrder = activity as ShowOrderDetail
         dispatchedOrdersJson.addProperty("city_id", USER_STORED_CITY_ID)
-        dispatchedOrdersJson.addProperty("status", 3)
+       // dispatchedOrdersJson.addProperty("status", 3)
         dispatchedOrdersJson.addProperty("created_by", USER_ID)
         startObservers()
         viewModel.startObserver()

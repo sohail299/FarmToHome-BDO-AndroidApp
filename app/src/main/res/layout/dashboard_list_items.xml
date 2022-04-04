@@ -72,6 +72,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <View
+                android:id="@+id/view"
                 android:layout_width="3dp"
                 android:layout_height="30dp"
                 android:background="@color/solid_gray"
@@ -101,9 +102,9 @@
                 android:text="@string/delivery_date"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textView2"
                 app:layout_constraintHorizontal_bias="0.463"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@+id/textView2"
                 app:layout_constraintVertical_bias="0.0" />
 

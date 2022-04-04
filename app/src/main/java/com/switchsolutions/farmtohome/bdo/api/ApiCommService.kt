@@ -46,7 +46,7 @@ interface ApiCommService {
         @GET("bdorequestsremove")
         fun removeRequest(@Query("requisition_id") requisition_id : Int) : Call<RequisitionResponseModel>
 
-        @POST("posbdorequestsstatus")
+        @POST("posbdorequestdispatchonly")
         fun getDispatchedOrders(@Body request : JsonObject) : Call<DispatchedOrdersResponseModel>
 
         @POST("bdocreatecustomer")

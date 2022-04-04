@@ -25,6 +25,7 @@
         <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
     </style>
 
+
     <style name="AppTheme.TextFloatLabelAppearance" parent="TextAppearance.Design.Hint">
         <!-- Floating label appearance here -->
         <item name="android:textColor">@color/white</item>

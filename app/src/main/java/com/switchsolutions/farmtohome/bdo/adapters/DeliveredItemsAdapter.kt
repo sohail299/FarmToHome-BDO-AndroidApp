@@ -1,6 +1,7 @@
 package com.switchsolutions.farmtohome.bdo.adapters
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.google.gson.JsonObject
 import com.switchsolutions.farmtohome.bdo.MainActivity
 import com.switchsolutions.farmtohome.bdo.R
 import com.switchsolutions.farmtohome.bdo.fragments.DashboardFragment
+import com.switchsolutions.farmtohome.bdo.fragments.DeliveredFragment
 import com.switchsolutions.farmtohome.bdo.fragments.DeliveredFragment.Companion.singleOrder
 import com.switchsolutions.farmtohome.bdo.fragments.DispatchFragment
 import com.switchsolutions.farmtohome.bdo.responsemodels.DashBoardOrdersData
@@ -24,9 +26,12 @@ import com.switchsolutions.farmtohome.bdo.viewmodels.DashboardFragmentViewModel
 import com.switchsolutions.farmtohome.bdo.viewmodels.DeliveredViewModel
 import com.switchsolutions.farmtohome.bdo.viewmodels.DispatchViewModel
 import kotlinx.coroutines.NonDisposableHandle.parent
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DeliveredItemsAdapter(private var viewModel: DeliveredViewModel,
                             private var listdata: ArrayList<DeliveredResponseData>,
+                            private var listdataCopy: java.util.ArrayList<DeliveredResponseData>,
                             private  var onClickListener: View.OnClickListener
 ) :
     RecyclerView.Adapter<DeliveredItemsAdapter.ViewHolder>() {
@@ -74,7 +79,29 @@ class DeliveredItemsAdapter(private var viewModel: DeliveredViewModel,
     private fun editOrder(){
 
     }
-
+    @SuppressLint("NotifyDataSetChanged")
+    fun filter(textString: String) {
+        var flag  = false
+        var text = textString
+        listdata.clear()
+        if (text.isEmpty()) {
+            DeliveredFragment.binding.serchviewTextNoProducts.visibility = View.GONE
+            listdata.addAll(listdataCopy)
+        } else {
+            text = text.lowercase(Locale.getDefault())
+            for (item in listdataCopy) {
+                if (item.customer!!.lowercase(Locale.getDefault()).contains(text)) {
+                    DeliveredFragment.binding.serchviewTextNoProducts.visibility = View.GONE
+                    listdata.add(item)
+                    flag = true
+                }
+            }
+            if (listdata.isEmpty()){
+                DeliveredFragment.binding.serchviewTextNoProducts.visibility = View.VISIBLE
+            }
+        }
+        notifyDataSetChanged()
+    }
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var textViewCustomerName: TextView
         var relativeLayout: ConstraintLayout

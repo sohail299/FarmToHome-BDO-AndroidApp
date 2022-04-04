@@ -3,9 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_edittext_bg"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:queryBackground="@android:color/transparent"
+        android:queryHint="Search by customer name"
+        app:iconifiedByDefault="false"
+        android:theme="@style/ThemeOverlay.SearchView"/>
+    <TextView
+        android:id="@+id/serchview_text_no_products"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:text="@string/no_orders_found"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:fontFamily="@font/montserrat"
+        android:visibility="gone"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_delivered"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+</LinearLayout>
+
 </FrameLayout>

@@ -38,21 +38,21 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField 'String', 'BASE_URL', '"http://admintest.farmtohome.com.pk/api/"'
-            buildConfigField 'String', 'API_BASE_URL', '"http://admintest.farmtohome.com.pk/api/"'
+            buildConfigField 'String', 'BASE_URL', '"http://apt.farmtohome.com.pk/api/"'
+            buildConfigField 'String', 'API_BASE_URL', '"http://apt.farmtohome.com.pk/api/"'
             minifyEnabled false
         }
         qa {
             //these urls will vary
             debuggable true
             initWith debug
-            buildConfigField 'String', 'BASE_URL', '"http://admintest.farmtohome.com.pk/api/"'
-            buildConfigField 'String', 'API_BASE_URL', '"http://admintest.farmtohome.com.pk/api/"'
+            buildConfigField 'String', 'BASE_URL', '"http://apt.farmtohome.com.pk/api/"'
+            buildConfigField 'String', 'API_BASE_URL', '"http://apt.farmtohome.com.pk/api/"'
             minifyEnabled false
         }
         debug {
-            buildConfigField 'String', 'BASE_URL', '"http://admintest.farmtohome.com.pk/api/"'
-            buildConfigField 'String', 'API_BASE_URL', '"http://admintest.farmtohome.com.pk/api/"'
+            buildConfigField 'String', 'BASE_URL', '"http://apt.farmtohome.com.pk/api/"'
+            buildConfigField 'String', 'API_BASE_URL', '"http://apt.farmtohome.com.pk/api/"'
             minifyEnabled false
         }
     }

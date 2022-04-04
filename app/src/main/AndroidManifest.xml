@@ -27,13 +27,11 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.BDOF2H.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:theme="@style/Theme.BDOF2H.NoActionBar" />
 
         <activity
             android:name=".fragments.AddCustomerActivity"
-            android:theme="@style/Theme.BDOF2H.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:theme="@style/Theme.BDOF2H.NoActionBar" />
     </application>
 
 </manifest>

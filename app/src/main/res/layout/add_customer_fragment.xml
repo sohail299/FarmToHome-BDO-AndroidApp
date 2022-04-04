@@ -8,12 +8,22 @@
             name="addCustomerRequestModel"
             type="com.switchsolutions.farmtohome.bdo.AddCustomerRequestModel" />
     </data>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/gray"
         tools:context=".fragments.CreateRequestFragment">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_add_customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="@color/white"
+            android:background="@color/colorAccent"
+            app:popupTheme="@style/Theme.BDOF2H.PopupOverlay"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +32,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Customer Name"
+                android:text="@string/customer_name"
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/montserrat"
@@ -63,7 +73,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Phone Number"
+                android:text="@string/phone_number"
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/montserrat"
@@ -89,7 +99,7 @@
                 android:id="@+id/tv_customer_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Address"
+                android:text="@string/address"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/montserrat"
@@ -114,7 +124,7 @@
                 android:id="@+id/tv_customer_branch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Branch"
+                android:text="@string/branch"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/montserrat"
@@ -132,7 +142,7 @@
                 android:id="@+id/tv_customer_sectors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sector"
+                android:text="@string/sector"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/montserrat"
@@ -146,36 +156,36 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="5dp"
                 android:layout_marginTop="8dp"/>
-            <TextView
-                android:id="@+id/tv_customer_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/montserrat"
-                android:layout_marginStart="15dp"/>
+<!--            <TextView-->
+<!--                android:id="@+id/tv_customer_email"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Email"-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:fontFamily="@font/montserrat"-->
+<!--                android:layout_marginStart="15dp"/>-->
 
-            <EditText
-                android:id="@+id/et_customer_email"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:ems="10"
-                android:maxLines="3"
-                android:text="@={addCustomerRequestModel.email}"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="5dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_edittext_bg"
-                android:hint="Enter Email"
-                android:inputType="textEmailAddress"/>
+<!--            <EditText-->
+<!--                android:id="@+id/et_customer_email"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:ems="10"-->
+<!--                android:maxLines="3"-->
+<!--                android:text="@={addCustomerRequestModel.email}"-->
+<!--                android:layout_marginEnd="15dp"-->
+<!--                android:layout_marginStart="15dp"-->
+<!--                android:paddingStart="10dp"-->
+<!--                android:paddingEnd="5dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/rounded_edittext_bg"-->
+<!--                android:hint="Enter Email"-->
+<!--                android:inputType="textEmailAddress"/>-->
             <TextView
                 android:id="@+id/tv_customer_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Password"
+                android:text="@string/customer_password"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/montserrat"
@@ -201,7 +211,7 @@
                 android:id="@+id/tv_customer_products"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Products"
+                android:text="@string/products"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/montserrat"
@@ -211,8 +221,10 @@
                 android:id="@+id/nacho_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"
                 android:background="@drawable/rounded_edittext_bg"
                 android:hint="Enter Products"/>
 
@@ -235,4 +247,5 @@
             app:fb_text="Add Customer"
             app:fb_textColor="#FFFFFF" />
     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

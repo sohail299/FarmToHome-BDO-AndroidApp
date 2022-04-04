@@ -14,7 +14,7 @@ class ValidationUtil {
         }
 
         fun isPasswordValid(password : String) : Boolean{
-            return password.length > 5
+            return password.length > 7
         }
 
         fun isPhoneNumberValid(msisdn : String) : Boolean{

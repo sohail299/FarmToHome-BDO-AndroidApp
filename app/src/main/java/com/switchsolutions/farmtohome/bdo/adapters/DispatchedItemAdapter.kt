@@ -46,6 +46,11 @@ class DispatchedItemAdapter(private var viewModel: DispatchViewModel,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+//        if (listdata[position].status == 3 )
+//        {
+//            holder.llMarkDelivered.visibility = View.GONE
+//        }
         val myListData: DispatchedOrdersData = listdata[position]
         holder.textViewCustomerName.text = listdata[position].customer
         holder.tvDeliveryDate.text = listdata[position].delivery_date
@@ -91,7 +96,6 @@ class DispatchedItemAdapter(private var viewModel: DispatchViewModel,
                     dialog.dismiss()
                 }
             builder.show()
-
     }
     private fun showDispatchSuccessMessage() {
             val pb : PlayBeep = viewContext as PlayBeep
@@ -153,12 +157,14 @@ class DispatchedItemAdapter(private var viewModel: DispatchViewModel,
         var tvDeliveryDate: TextView
         var tvRequestId: TextView
         var cvDeleteOrder: CardView
+        var llMarkDelivered: LinearLayout
         init {
             textViewCustomerName = itemView.findViewById<View>(R.id.tv_customer_name) as TextView
             tvDeliveryDate = itemView.findViewById<View>(R.id.tv_delivery_date) as TextView
             tvRequestId = itemView.findViewById<View>(R.id.tv_request_id) as TextView
             relativeLayout = itemView.findViewById<View>(R.id.constraint_layout) as ConstraintLayout
             cvDeleteOrder = itemView.findViewById(R.id.cv_remove_order) as CardView
+            llMarkDelivered = itemView.findViewById(R.id.ll_mark_delivered) as LinearLayout
         }
     }
 
