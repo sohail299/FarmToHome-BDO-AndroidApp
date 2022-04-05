@@ -31,10 +31,6 @@ class LoginActivity : AppCompatActivity(),
     private val MY_PREFS_NAME = "FarmToHomeBDO"
     private lateinit var branchViewmodel: BranchViewModel
 
-    companion object {
-        const val SIGNIN_FRAGMENT_TAG: String = "signInFrag"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Inflate the layout for this fragment
@@ -42,7 +38,6 @@ class LoginActivity : AppCompatActivity(),
         viewModel = ViewModelProvider(this)[SignInViewModel::class.java]
         setContentView(binding.root)
         val preferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
-        var name = preferences.getInt("User", 0)
         var isLoggedIn = preferences.getBoolean("isLoggedIn", false)
         if (isLoggedIn) {
             val intent = Intent(this, MainActivity::class.java)

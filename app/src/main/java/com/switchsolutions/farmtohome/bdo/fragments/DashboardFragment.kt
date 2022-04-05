@@ -83,7 +83,6 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
     private lateinit var waitDialog: ProgressDialog
     private val MY_PREFS_NAME = "FarmToHomeBDO"
     var productId: Int = 0
-    var productName: String = ""
     var productUnit: String = ""
     var quantityCheck: Boolean = true
 
@@ -299,49 +298,6 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         }
     }
 
-//    fun startObserversForEditOrders() {
-//        viewModelEditOrders.callSignInApi.observe(viewLifecycleOwner, Observer {
-//            if (it!!) {
-//                if (waitDialog != null && !waitDialog.isShowing) {
-//                    waitDialog = ProgressDialog.show(requireContext(), "", "Fetching Detail..")
-//                    waitDialog.setCancelable(true)
-//                }
-//            }
-//        })
-//        viewModelEditOrders.apiResponseSuccess.observe(viewLifecycleOwner, Observer {
-//            if (waitDialog.isShowing) waitDialog.dismiss()
-//           // editOrders = editOrdersResponseData.products
-////            val adapter = DashboardAdapter(orders, View.OnClickListener(){
-////            })
-//
-//            //showEditOrderDialog()
-//        })
-//        viewModel.apiResponseFailure.observe(viewLifecycleOwner, Observer {
-//            if (waitDialog.isShowing) waitDialog.dismiss()
-//            if ((it?.statusCode == HttpStatusCodes.SC_UNAUTHORIZED) || (it?.statusCode == HttpStatusCodes.SC_NO_CONTENT)) {
-//                Toast.makeText(
-//                    requireContext(), "Unauthorized",
-//                    Toast.LENGTH_LONG
-//                ).show()
-////                val builder = AlertDialog.Builder(context!!)
-////                builder.setMessage(context?.getString(R.string.invalid_credentials))
-////                        .setPositiveButton(context?.getString(R.string.ok)) { dialog, _ ->
-////                            dialog.dismiss()
-////                        }
-////                builder.create().show()
-//            } else {
-////                Toast.makeText(
-////                    requireContext(), "An Error Occurred",
-////                    Toast.LENGTH_LONG
-////                ).show()
-//                //NotificationUtil.showShortToast(context!!, context!!.getString(R.string.error_occurred), Type.DANGER)
-//            }
-//        })
-//
-//    }
-    fun triggerMainFragmentFunction(dashBoardOrdersData: DashBoardOrdersData) {
-        editData = dashBoardOrdersData
-    }
     fun showEditOrderDialog(products: ArrayList<OrderProductsData>, data: EditOrdersData, count: ArrayList<Int>) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         val inflater: LayoutInflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -572,7 +528,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
     private fun startEditObserver() {
         viewModelEdit.callEditApi.observe(viewLifecycleOwner, Observer {
             if (it!!) {
-                if (waitDialog != null && !waitDialog.isShowing) {
+                if (!waitDialog.isShowing) {
                     waitDialog = ProgressDialog.show(requireContext(), "", "Updating")
                     waitDialog.setCanceledOnTouchOutside(true)
                 }
@@ -626,9 +582,6 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         })
     }
 
-    private fun handleOrderUpdate() {
-    }
-
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         Log.i("ClickedPosition", p2.toString())
     }
@@ -663,7 +616,6 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
                 /**
                  * The listener used to indicate the user has finished selecting a date.
                  */
-
 
                 /**
                  * The listener used to indicate the user has finished selecting a date.
@@ -739,8 +691,4 @@ class DashboardFragment : Fragment(), AdapterView.OnItemClickListener {
         dpd.show()
 
     }
-
-
-
-
 }

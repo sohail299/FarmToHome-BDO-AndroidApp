@@ -51,6 +51,7 @@ class MyViewHolder( val binding: CartItemListAdapterBinding, var quantity: Int) 
         binding.totalQtyCart.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (binding.totalQtyCart.text.toString().isNotEmpty()) {
+                    if (position < CartFragment.productQuantity.size)
                     CartFragment.productQuantity[position] = s.toString()
                     product.quantity = s.toString()
                 }
@@ -58,17 +59,11 @@ class MyViewHolder( val binding: CartItemListAdapterBinding, var quantity: Int) 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (binding.totalQtyCart.text.toString().isNotEmpty()) {
-                    CartFragment.productQuantity[position] = s.toString()
-                    product.quantity = s.toString()
-
-                }
             }
         })
         binding.productQtyAddCart.setOnClickListener {
                 quantity = product.quantity.toIntOrNull()?.plus(1)!!
                 product.quantity = product.quantity.toIntOrNull()?.plus(1).toString()
-                CartFragment.productQuantity[position] = quantity.toString()
                 binding.totalQtyCart.setText(quantity.toString())
 
 
@@ -78,7 +73,6 @@ class MyViewHolder( val binding: CartItemListAdapterBinding, var quantity: Int) 
             if ((product.quantity.toIntOrNull())!! > 1){
                 quantity = product.quantity.toIntOrNull()?.minus(1)!!
                 product.quantity = product.quantity.toIntOrNull()?.minus(1).toString()
-            CartFragment.productQuantity[position] = quantity.toString()
             binding.totalQtyCart.setText(quantity.toString())
 
         }

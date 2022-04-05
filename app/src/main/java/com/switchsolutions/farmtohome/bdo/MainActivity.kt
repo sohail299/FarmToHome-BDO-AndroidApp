@@ -73,8 +73,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
     }
     private lateinit var binding: ActivityMainBinding
     private val ISLAMABAD_I9 = "Islamabad-I9"
-    private val ISLAMABAD_G9 = "Islamabad-G9"
-    private val PESHAWAR = "Peshawar"
     private val MY_PREFS_NAME = "FarmToHomeBDO"
     private var USER_SELECTED_BRANCH_INDEX = 0
     private var USER_STORED_CITY_ID = 4
@@ -87,7 +85,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
     private lateinit var productVM: ProductViewModel
     private lateinit var cartVM: CartViewModel
     private lateinit var branchVM: BranchViewModel
-    lateinit var cartDataList: List<CartEntityClass>
     private lateinit var viewModelSingle: DashboardFragmentViewModel
     private lateinit var editOrdersResponseData: GetOrdersForEditResponseModel
     private lateinit var products: ArrayList<OrderProductsData>
@@ -657,7 +654,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         })
     }
 
-    fun showSingleOrderDialog(products: ArrayList<OrderProductsData>, data: EditOrdersData) {
+    private fun showSingleOrderDialog(products: ArrayList<OrderProductsData>, data: EditOrdersData) {
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
             val inflater: LayoutInflater =
                 this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -675,11 +672,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
             recyclerView.layoutManager = LinearLayoutManager(this)
             recyclerView.adapter = adapter
             adapter.notifyDataSetChanged()
-            val adapterTvProducts = ArrayAdapter(
-                this,
-                android.R.layout.simple_list_item_1,
-                MainActivity.productNamesData
-            )
+
             // linearLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent))
             //  linearLayout.setBackgroundResource(Color.TRANSPARENT)
             myCardView.setCardBackgroundColor(Color.TRANSPARENT)
