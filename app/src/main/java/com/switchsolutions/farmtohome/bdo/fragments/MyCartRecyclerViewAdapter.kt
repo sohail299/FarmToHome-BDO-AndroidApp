@@ -44,7 +44,6 @@ class MyViewHolder( val binding: CartItemListAdapterBinding, var quantity: Int) 
         binding.totalQtyCart.setText(product.quantity)
         binding.tvCustomerName.text = product.customerName
         binding.productUnitAndQuantityCart2.text = product.productUnit
-
         binding.deleteProductImageCart.setOnClickListener {
             clickListener(product)
         }
@@ -65,16 +64,12 @@ class MyViewHolder( val binding: CartItemListAdapterBinding, var quantity: Int) 
                 quantity = product.quantity.toIntOrNull()?.plus(1)!!
                 product.quantity = product.quantity.toIntOrNull()?.plus(1).toString()
                 binding.totalQtyCart.setText(quantity.toString())
-
-
-
         }
         binding.productQtyMinusCart.setOnClickListener {
             if ((product.quantity.toIntOrNull())!! > 1){
                 quantity = product.quantity.toIntOrNull()?.minus(1)!!
                 product.quantity = product.quantity.toIntOrNull()?.minus(1).toString()
             binding.totalQtyCart.setText(quantity.toString())
-
         }
         }
     }

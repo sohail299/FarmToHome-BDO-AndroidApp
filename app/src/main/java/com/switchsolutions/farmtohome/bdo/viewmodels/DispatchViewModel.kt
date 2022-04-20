@@ -17,10 +17,8 @@ import timber.log.Timber
 class DispatchViewModel : ViewModel() {
 
     var callSignInApi: MutableLiveData<Boolean> = MutableLiveData()
-
     var apiResponseSuccess: MutableLiveData<DispatchedOrdersResponseModel> = MutableLiveData()
     var apiResponseFailure: MutableLiveData<ErrorDto> = MutableLiveData()
-
     var apiDeliveredSuccess: MutableLiveData<DeliveryStatusResponseModel> = MutableLiveData()
     var apiDeliveredFailure: MutableLiveData<ErrorDto> = MutableLiveData()
 

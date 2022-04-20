@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         var productUnitData: ArrayList<String> = ArrayList()
         var branchNamesData: ArrayList<String> = ArrayList()
         var branchIdData: ArrayList<Int> = ArrayList()
-        var productQuantity: ArrayList<String> = ArrayList()
     }
     private lateinit var binding: ActivityMainBinding
     private val ISLAMABAD_I9 = "Islamabad-I9"
@@ -112,7 +111,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         }
 
         redirectToMainFragment(savedInstanceState)
-        viewModelSingle = ViewModelProvider(this).get(DashboardFragmentViewModel::class.java)
+        viewModelSingle = ViewModelProvider(this)[DashboardFragmentViewModel::class.java]
         val prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
         USER_SELECTED_BRANCH_NAME = prefs.getString("BranchName", ISLAMABAD_I9)
             .toString() //"No name defined" is the default value.
@@ -126,8 +125,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
             prefs.getString("customerDeliveryDate", "").toString() //" is the default value.
         token = prefs.getString("accessToken", "").toString()
         binding.tvLocation.text = USER_SELECTED_BRANCH_NAME
-        productsApiViewModel = ViewModelProvider(this).get(ProductsApiViewModel::class.java)
-        customersApiViewModel = ViewModelProvider(this).get(CustomersApiViewModel::class.java)
+        productsApiViewModel = ViewModelProvider(this)[ProductsApiViewModel::class.java]
+        customersApiViewModel = ViewModelProvider(this)[CustomersApiViewModel::class.java]
         startProductsApiObservers()
         startCustomersApiObserver()
         productsApiViewModel.startObserver(USER_STORED_CITY_ID)
@@ -136,7 +135,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         val dao = CartDatabase.getInstance(this).cartDAO
         val repository = CartRepository(dao)
         val factory = CartViewModelFactory(repository)
-        cartVM = ViewModelProvider(this, factory).get(CartViewModel::class.java)
+        cartVM = ViewModelProvider(this, factory)[CartViewModel::class.java]
         getBranches()
         //var badgeCount = cartVM.getCartItemCount()
         val badge = binding.bottomNavigation.getOrCreateBadge(R.id.item3)
@@ -290,7 +289,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
     }
 
     private fun showLocationSelectionBox() {
-
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         val inflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -347,7 +345,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
             val dao = CartDatabase.getInstance(this).cartDAO
             val repository = CartRepository(dao)
             val factory = CartViewModelFactory(repository)
-            viewModel = ViewModelProvider(this, factory).get(CartViewModel::class.java)
+            viewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
             binding.mainCartViewModel = viewModel
             viewModel.clearAll()
             val editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit()
@@ -369,7 +367,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         val daoCustomer = CustomerDatabase.getInstance(this).customerDAO
         val repositoryCustomer = CustomerRepository(daoCustomer)
         val factoryCustomer = CustomerViewModelFactory(repositoryCustomer)
-        customerVM = ViewModelProvider(this, factoryCustomer).get(CustomerViewModel::class.java)
+        customerVM = ViewModelProvider(this, factoryCustomer)[CustomerViewModel::class.java]
         binding.customerViewModel = customerVM
         customerVM.getSavedProducts().observe(this, Observer {
             if (it.isNotEmpty()) {
@@ -390,7 +388,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         val daoProduct = ProductDatabase.getInstance(this).productDao
         val repositoryProduct = ProductRepository(daoProduct)
         val factoryProduct = ProductViewModelFactory(repositoryProduct)
-        productVM = ViewModelProvider(this, factoryProduct).get(ProductViewModel::class.java)
+        productVM = ViewModelProvider(this, factoryProduct)[ProductViewModel::class.java]
         binding.productViewModel = productVM
         productVM.getSavedProducts().observe(this, Observer {
             if (it.isNotEmpty()) {
@@ -418,7 +416,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         val daoProduct = ProductDatabase.getInstance(this).productDao
         val repositoryProduct = ProductRepository(daoProduct)
         val factoryProduct = ProductViewModelFactory(repositoryProduct)
-        productVM = ViewModelProvider(this, factoryProduct).get(ProductViewModel::class.java)
+        productVM = ViewModelProvider(this, factoryProduct)[ProductViewModel::class.java]
         binding.productViewModel = productVM
         if (productsData.isNotEmpty()) {
             productVM.clearAll()
@@ -451,7 +449,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
             val daoBranch = BranchDatabase.getInstance(this).branchDAO
             val repositoryBranch = BranchRespository(daoBranch)
             val factoryBranch = BranchViewModelFactory(repositoryBranch)
-            branchVM = ViewModelProvider(this, factoryBranch).get(BranchViewModel::class.java)
+            branchVM = ViewModelProvider(this, factoryBranch)[BranchViewModel::class.java]
             binding.branchViewModel = branchVM
             branchVM.getSavedBranches().observe(this, Observer {
                 if (it.isNotEmpty()) {
@@ -473,7 +471,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Re
         val daoCustomer = CustomerDatabase.getInstance(this).customerDAO
         val repositoryCustomer = CustomerRepository(daoCustomer)
         val factoryCustomer = CustomerViewModelFactory(repositoryCustomer)
-        customerVM = ViewModelProvider(this, factoryCustomer).get(CustomerViewModel::class.java)
+        customerVM = ViewModelProvider(this, factoryCustomer)[CustomerViewModel::class.java]
         binding.customerViewModel = customerVM
         if (usersData.isNotEmpty()) {
             customerVM.clearAll()

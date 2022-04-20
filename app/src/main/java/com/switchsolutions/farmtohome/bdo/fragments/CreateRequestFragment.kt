@@ -13,7 +13,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,9 +27,7 @@ import com.switchsolutions.farmtohome.bdo.room_db.cart.CartDatabase
 import com.switchsolutions.farmtohome.bdo.room_db.cart.CartEntityClass
 import com.switchsolutions.farmtohome.bdo.room_db.cart.CartRepository
 import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerDatabase
-import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerEntityClass
 import com.switchsolutions.farmtohome.bdo.room_db.customer.CustomerRepository
-import com.switchsolutions.farmtohome.bdo.viewmodels.CreateRequestViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,16 +40,12 @@ class CreateRequestFragment : Fragment() {
         var item: ArrayList<String>? = ArrayList()
         lateinit var binding : CreateRequestFragmentBinding
         lateinit var cartDataList: List<CartEntityClass>
-       //  var customerNamesData: ArrayList<String> = ArrayList()
     }
 
-    private lateinit var viewModel: CreateRequestViewModel
-    private lateinit var autoTvCustomers: AppCompatAutoCompleteTextView
     private lateinit var productListingAdapter: AddProductsAdapter
     private lateinit var createBdoRequestModel : CreateBdoRequestModel
     private lateinit var cartVM : CartViewModel
     private lateinit var customerVM : CustomerViewModel
-    private lateinit var customerEntityClass: CustomerEntityClass
     var customerId : Int = 0
     var deliveryDate : String = ""
     var previousCustomerId : Int = 0
@@ -84,7 +77,7 @@ class CreateRequestFragment : Fragment() {
         binding.rvProductList.adapter = productListingAdapter
         if (customerId != 0 && customerName.isNotBlank()){
             binding.etSelectCustomer.setText(customerName)
-            binding.tvDateSelected.text = deliveryDate.toString()
+            binding.tvDateSelected.text = deliveryDate
         }
         createBdoRequestModel = CreateBdoRequestModel( null, "", null, null)
         binding.llDeliveryDate.setOnClickListener {
@@ -97,8 +90,8 @@ class CreateRequestFragment : Fragment() {
         val dao = CartDatabase.getInstance(requireContext()).cartDAO
         val repository = CartRepository(dao)
         val factory = CartViewModelFactory(repository)
-        val daoCutomer = CustomerDatabase.getInstance(requireContext()).customerDAO
-        val repositoryCustomer = CustomerRepository(daoCutomer)
+        val daoCustomer = CustomerDatabase.getInstance(requireContext()).customerDAO
+        val repositoryCustomer = CustomerRepository(daoCustomer)
         val factoryCustomer = CustomerViewModelFactory(repositoryCustomer)
         customerVM = ViewModelProvider(this, factoryCustomer).get(CustomerViewModel::class.java)
         cartVM = ViewModelProvider(this, factory).get(CartViewModel::class.java)
@@ -140,7 +133,7 @@ class CreateRequestFragment : Fragment() {
                             customerId = MainActivity.customerIdData[index]
                             customerName = MainActivity.customerNamesData[index]
 
-                            Log.i("CustomerIndex", "ID:   " + customerId +  " Customer:   " + customerName )
+                            Log.i("CustomerIndex", "ID:   $customerId Customer:   $customerName")
                             break
                         }
                     }
@@ -178,7 +171,7 @@ class CreateRequestFragment : Fragment() {
                             productId = MainActivity.productIdData[index]
                             productUnit = MainActivity.productUnitData[index]
                             binding.tvProductQuantity.text = "Quantity $productUnit"
-                            Log.i("CustomerIndex", "ID:   " + productId +  " Customer:   " + productUnit )
+                            Log.i("CustomerIndex", "ID:   $productId Customer:   $productUnit")
                             break
                         }
                     }
@@ -213,7 +206,7 @@ class CreateRequestFragment : Fragment() {
                 binding.etSelectProduct.error = "Choose Product"
             } else if (binding.etSelectProductQuantity.text.isEmpty() || (binding.etSelectProductQuantity.text.toString().toIntOrNull())!! <= 0) {
                 binding.etSelectProductQuantity.error = "Enter Valid Quantity"
-            } else if (cartDataList != null && cartDataList.isNotEmpty()){
+            } else if (!cartDataList.isNullOrEmpty()){
                 val inputMethodManager: InputMethodManager? = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
                 inputMethodManager!!.hideSoftInputFromWindow(view.applicationWindowToken, 0)
                 binding.etSelectProduct.error = null
@@ -357,7 +350,6 @@ class CreateRequestFragment : Fragment() {
                 val theDate = sdf.parse(selectedDate)
                 //use the safe call operator with .let to avoid app crashing it theDate is null
                 theDate?.let {
-
                     binding.tvDateSelected.text = sdf.format(theDate)
                     binding.ivDatePicker.setImageResource(R.drawable.calendar)
                     // Here we have parsed the current date with the Date Formatter which is used above.
@@ -375,10 +367,8 @@ class CreateRequestFragment : Fragment() {
          * @param maxDate The maximal supported date.
          */
         // 86400000 is milliseconds of 24 Hours. Which is used to restrict the user from selecting today and future day.
-        dpd.datePicker.minDate = System.currentTimeMillis() - 1000
+        // dpd.datePicker.minDate = System.currentTimeMillis() - 1000    // this line of code restricts user to select past dates
         dpd.show()
 
     }
-
-
 }

@@ -81,12 +81,12 @@ class CartFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        submitViewModel = ViewModelProvider(this).get(SubmitCartViewModel::class.java)
+        submitViewModel = ViewModelProvider(this)[SubmitCartViewModel::class.java]
 
         val dao = CartDatabase.getInstance(requireContext()).cartDAO
         val repository = CartRepository(dao)
         val factory = CartViewModelFactory(repository)
-        cartViewModel = ViewModelProvider(this, factory).get(CartViewModel::class.java)
+        cartViewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
         binding.myCartViewModel = cartViewModel
         binding.lifecycleOwner = this
         cartViewModel.message.observe(viewLifecycleOwner, Observer {
@@ -95,9 +95,14 @@ class CartFragment : Fragment() {
             }
         })
         binding.btnSubmitCart.setOnClickListener {
+            binding.btnSubmitCart.isEnabled = false
+            waitDialog = ProgressDialog.show(requireContext(), "", "Submitting")
+            waitDialog.setCancelable(false)
             if (productQuantity.isNotEmpty()){
                 for ((index) in productQuantity.withIndex()){
                     if (productQuantity[index].toInt() == 0) {
+                        if (waitDialog.isShowing) waitDialog.dismiss()
+                        binding.btnSubmitCart.isEnabled = true
                         Toast.makeText(
                             requireContext(),
                             "Quantity cannot be less than 1",
@@ -147,6 +152,8 @@ class CartFragment : Fragment() {
                 }
             }
             else {
+                if (waitDialog.isShowing) waitDialog.dismiss()
+                binding.btnSubmitCart.isEnabled = true
                 Toast.makeText(requireContext(), "Please add items to Cart before submitting order.", Toast.LENGTH_LONG).show()
             }
         }
@@ -155,12 +162,11 @@ class CartFragment : Fragment() {
     fun startObservers() {
         submitViewModel.callCartSubmitApi.observe(viewLifecycleOwner, Observer {
             if (it!!) {
-                waitDialog = ProgressDialog.show(requireContext(), "", "Submitting")
-                waitDialog.setCancelable(false)
+//                waitDialog = ProgressDialog.show(requireContext(), "", "Submitting")
+//                waitDialog.setCancelable(false)
             }
         })
         submitViewModel.apiResponseSuccess.observe(viewLifecycleOwner, Observer {
-            if (waitDialog.isShowing) waitDialog.dismiss()
             submissionDataResponse = it
 //            val adapter = DashboardAdapter(orders, View.OnClickListener(){
 //            })
@@ -168,11 +174,14 @@ class CartFragment : Fragment() {
             productQuantity.clear()
             cartViewModel.clearAll()
             clearCartAfterSubmission()
+            if (waitDialog.isShowing) waitDialog.dismiss()
+            binding.btnSubmitCart.isEnabled = true
             showSubmissionSuccessMessage()
             initRecyclerView()
         })
         submitViewModel.apiResponseFailure.observe(viewLifecycleOwner, Observer {
             if (waitDialog.isShowing) waitDialog.dismiss()
+            binding.btnSubmitCart.isEnabled = true
             if ((it?.statusCode == HttpStatusCodes.SC_UNAUTHORIZED) || (it?.statusCode == HttpStatusCodes.SC_NO_CONTENT)) {
                 Toast.makeText(
                     requireContext(), "Failed to Submit",
@@ -189,7 +198,7 @@ class CartFragment : Fragment() {
 //                    requireContext(), "An Error Occurred",
 //                    Toast.LENGTH_LONG
 //                ).show()
-                if (waitDialog.isShowing) waitDialog.dismiss()
+               // if (waitDialog.isShowing) waitDialog.dismiss()
                 //NotificationUtil.showShortToast(context!!, context!!.getString(R.string.error_occurred)+ it.message, Type.DANGER)
             }
         })

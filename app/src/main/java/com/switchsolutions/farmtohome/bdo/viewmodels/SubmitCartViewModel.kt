@@ -17,8 +17,6 @@ import timber.log.BuildConfig
 import timber.log.Timber
 
 class SubmitCartViewModel : ViewModel() {
-
-
     var callCartSubmitApi: MutableLiveData<Boolean> = MutableLiveData()
     var apiResponseSuccess: MutableLiveData<BDORequestResponsemodel> = MutableLiveData()
     var apiResponseFailure: MutableLiveData<ErrorDto> = MutableLiveData()
